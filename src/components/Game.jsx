@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Board from "./Board";
+import Menu from './Menu'
 import { getShuffledTestWords } from '../utils/games'
 
 const Game = ({ gameID }) => {
@@ -12,6 +13,7 @@ const Game = ({ gameID }) => {
         categories: [],
         guesses: [],
         currentGuess: [],
+        mistakes: 0
     });
 
     // useEffect(() => {
@@ -35,9 +37,15 @@ const Game = ({ gameID }) => {
     }
 
     return (
-        <>
-            <Board game={game} setGame={setGame} />
-        </>
+        <div>
+            <section>
+                <Board game={game} setGame={setGame} />
+            </section>
+            <section>Mistakes</section>
+            <section>
+                <Menu game={game} setGame={setGame} />
+            </section>
+        </div>
     );
 }
 

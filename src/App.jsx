@@ -18,9 +18,7 @@ function App() {
 
   return (
     <>
-      <div className='cardContainer cardContainer2'>
-        <Game gameID={gameID} />
-      </div>
+      <Game gameID={gameID} />
     </>
   )
 }

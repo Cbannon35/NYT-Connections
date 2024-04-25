@@ -3,10 +3,9 @@ import Word from './Word'
 import SelectedWord from './SelectedWord';
 
 const Board = ({ game, setGame }) => {
-    const [selectedCount, setSelectedCount] = useState(0);
 
     function guessWord(word) {
-        if (game.currentGuess.includes(word) || selectedCount > 3) {
+        if (game.currentGuess.includes(word) || game.currentGuess.length > 3) {
             return;
         }
 
@@ -14,12 +13,10 @@ const Board = ({ game, setGame }) => {
             ...prevGame,
             currentGuess: [...prevGame.currentGuess, word]
         }));
-
-        setSelectedCount(prevCount => prevCount + 1);
     }
 
     function unguessWord(word) {
-        if (!game.currentGuess.includes(word) || selectedCount <= 0) {
+        if (!game.currentGuess.includes(word) || game.currentGuess.length <= 0) {
             return;
         }
 
@@ -27,8 +24,6 @@ const Board = ({ game, setGame }) => {
             ...prevGame,
             currentGuess: prevGame.currentGuess.filter(w => w !== word)
         }));
-
-        setSelectedCount(prevCount => prevCount - 1);
     }
 
     return (
@@ -37,7 +32,7 @@ const Board = ({ game, setGame }) => {
                 {game.words.map((word, index) => (
                     game.currentGuess.includes(word) ?
                         <SelectedWord key={index} word={word} unguessWord={unguessWord} /> :
-                        <Word key={index} word={word} guessWord={guessWord} selectedCount={selectedCount} />
+                        <Word key={index} word={word} guessWord={guessWord} selectedCount={game.currentGuess.length} />
                 ))}
             </div>
         </>
