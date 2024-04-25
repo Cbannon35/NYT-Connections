@@ -14,7 +14,7 @@ const formattedDate = formatDate(myDate);
 console.log("Today's Date: ", formattedDate);
 
 function App() {
-  const [gameID, setGameID] = useState(formattedDate);
+  const [gameID, setGameID] = useState("test");
 
   return (
     <>

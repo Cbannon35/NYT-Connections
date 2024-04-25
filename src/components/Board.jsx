@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Word from './Word'
 import SelectedWord from './SelectedWord';
+import { checkTestGuess } from '../utils/games';
 
 const Board = ({ game, setGame }) => {
 
