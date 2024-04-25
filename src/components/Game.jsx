@@ -3,9 +3,15 @@ import Board from "./Board";
 import Menu from './Menu'
 import { getShuffledTestWords } from '../utils/games'
 
+const { ClientGame } = require('../utils/games');
+
 const Game = ({ gameID }) => {
 
     const [loaded, setLoaded] = useState(false);
+    /**
+     * State hook for managing the game
+     * @type {[ClientGame, function: React.Dispatch<ClientGame>]}
+     */
     const [game, setGame] = useState({
         id: gameID,
         solved: false,

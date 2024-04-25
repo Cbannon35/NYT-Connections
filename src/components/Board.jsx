@@ -3,6 +3,13 @@ import Word from './Word'
 import SelectedWord from './SelectedWord';
 import { checkTestGuess } from '../utils/games';
 
+
+/**
+ * The Board component
+ * @param {ClientGame} game
+ * @param {React.Dispatch<React.SetStateAction<ClientGame>>} setGame
+ * @returns 
+ */
 const Board = ({ game, setGame }) => {
 
     function guessWord(word) {
@@ -28,7 +35,10 @@ const Board = ({ game, setGame }) => {
     }
 
     return (
-        <>
+        <div>
+            <div>
+                "hi"
+            </div>
             <div className='cardContainer cardContainer2' >
                 {game.words.map((word, index) => (
                     game.currentGuess.includes(word) ?
@@ -36,7 +46,7 @@ const Board = ({ game, setGame }) => {
                         <Word key={index} word={word} guessWord={guessWord} selectedCount={game.currentGuess.length} />
                 ))}
             </div>
-        </>
+        </div>
     )
 }
 
