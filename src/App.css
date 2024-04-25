@@ -1,0 +1,13 @@
+.cardContainer {
+  grid-template-rows: repeat(4, 1fr);
+  height: calc(3* 8px + 4* 80px);
+}
+
+.cardContainer2 {
+  display: grid;
+  gap: 8px;
+  width: calc(3* 8px + 4* 150px);
+  grid-template-columns: repeat(4, 1fr);
+  min-height: 0;
+  min-width: 0;
+}
