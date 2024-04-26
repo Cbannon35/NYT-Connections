@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Word from './Word'
 import SelectedWord from './SelectedWord';
-import { checkTestGuess } from '../utils/games';
-
+import { checkTestGuess } from '../utils/game';
+import { ClientGame } from '../utils/game';
 
 /**
  * The Board component
@@ -37,7 +37,12 @@ const Board = ({ game, setGame }) => {
     return (
         <div>
             <div>
-                "hi"
+                {game.categories.map((category, index) => (
+                    <div key={index}>
+                        <span>{category}</span>
+                        <span>{game.currentGuess.length}</span>
+                    </div>
+                ))}
             </div>
             <div className='cardContainer cardContainer2' >
                 {game.words.map((word, index) => (

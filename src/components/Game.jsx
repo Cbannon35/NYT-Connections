@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import Board from "./Board";
 import Menu from './Menu'
-import { getShuffledTestWords } from '../utils/games'
+import { getShuffledTestWords } from '../utils/game.js'
 
-const { ClientGame } = require('../utils/types');
+// const { ClientGame } = require('../utils/types');
+import { ClientGame } from '../utils/game.js';
 
 const Game = ({ gameID }) => {
 
@@ -12,20 +13,9 @@ const Game = ({ gameID }) => {
      * State hook for managing the game
      * @type {[ClientGame, function: React.Dispatch<ClientGame>]}
      */
-    const [game, setGame] = useState({
-        id: gameID,
-        solved: false,
-        words: [],
-        categories: [],
-        guesses: [],
-        currentGuess: [],
-        mistakes: 0
-    });
+    const [game, setGame] = useState(new ClientGame(gameID, []));
 
-    // useEffect(() => {
-    //     console.log(game.currentGuess)
-    // }, [game.currentGuess]);
-
+    /* TODO: Fetch the game data from the server */
     useEffect(() => {
         setLoaded(false);
         setGame(prevGame => ({
@@ -47,7 +37,12 @@ const Game = ({ gameID }) => {
             <section>
                 <Board game={game} setGame={setGame} />
             </section>
-            <section>Mistakes</section>
+            <section>
+                <div>
+                    <span>Mistakes emaining:</span>
+                    <span></span>
+                </div>
+            </section>
             <section>
                 <Menu game={game} setGame={setGame} />
             </section>

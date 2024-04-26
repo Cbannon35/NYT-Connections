@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { getShuffledTestWords, checkTestGuess } from '../utils/games'
+import { getShuffledTestWords, checkTestGuess } from '../utils/game'
 
 const Menu = ({ game, setGame }) => {
 
@@ -32,7 +32,7 @@ const Menu = ({ game, setGame }) => {
             submitTest();
             return;
         }
-
+        /* TODO: Submit the guess to the server for validation */
         console.log("TODO backend w/ fast")
     }
 
