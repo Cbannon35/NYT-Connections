@@ -11,3 +11,13 @@
   min-height: 0;
   min-width: 0;
 }
+
+.boardContainer {
+  width: calc(3* 8px + 4* 150px);
+  height: calc(3* 8px + 4* 80px);
+}
+
+.boardContainerMobile {
+  width: calc(3* 8px + 4* 22.5vw);
+  height: calc(3* 8px + 4* 22.5vw);
+}

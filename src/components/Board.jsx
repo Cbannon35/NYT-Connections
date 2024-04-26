@@ -35,12 +35,11 @@ const Board = ({ game, setGame }) => {
     }
 
     return (
-        <div>
-            <div>
+        <div className='flex flex-col justify-center boardContainer my-[24px]'>
+            <div className='flex flex-col gap-[8px]'>
                 {game.categories.map((category, index) => (
                     <div key={index}>
                         <span>{category}</span>
-                        <span>{game.currentGuess.length}</span>
                     </div>
                 ))}
             </div>

@@ -33,14 +33,20 @@ const Game = ({ gameID }) => {
     }
 
     return (
-        <div>
+        <div className='flex flex-col gap-[20px]'>
             <section>
                 <Board game={game} setGame={setGame} />
             </section>
             <section>
-                <div>
-                    <span>Mistakes emaining:</span>
-                    <span></span>
+                <div className='flex justify-center'>
+                    <p className='flex flex-row items-center gap-[10px]'>
+                        Mistakes remaining:
+                        <span className='flex flex-row gap-[10px]'>
+                            {[...Array(4 - game.mistakes)].map((_, index) => (
+                                <span key={index} className="bg-gray-600 w-[16px] h-[16px] rounded-full"></span>
+                            ))}
+                        </span>
+                    </p>
                 </div>
             </section>
             <section>

@@ -42,21 +42,30 @@ const Menu = ({ game, setGame }) => {
             console.log("Correct guess: ", category);
             setGame(prevGame => ({
                 ...prevGame,
+                categories: [...prevGame.categories, category],
+                currentGuess: [],
+                words: [...prevGame.words.filter(word => !prevGame.currentGuess.includes(word))],
+                solved: prevGame.categories.length >= 3
             }));
         } else {
             console.log("Incorrect guess");
             setGame(prevGame => ({
                 ...prevGame,
-                mistakes: prevGame.mistakes + 1
+                mistakes: prevGame.mistakes + 1,
+                lost: prevGame.mistakes >= 3
             }));
         }
     }
 
     return (
         <div className='flex flex-row gap-[10px] justify-center'>
-            <button className="px-[15py] rounded-full font-semibold min-w-[5.5em] h-[3em] w-fit" onClick={shuffle} style={{ border: "1px solid black" }}>Shuffle</button>
-            <button className="px-[15py] rounded-full font-semibold min-w-[7.5em] h-[3em] w-fit" style={{ border: `1px solid ${deslectDisable ? "grey" : "black"}`, color: `${deslectDisable ? "grey" : "black"}` }} disabled={deslectDisable} onClick={deselectAll}>Deselect all</button>
-            <button className="px-[15py] rounded-full font-semibold min-w-[5.5em] h-[3em] w-fit" style={{ border: `1px solid ${submitDisable ? "grey" : "black"}`, color: `${submitDisable ? "grey" : "black"}` }} disabled={submitDisable} onClick={submit}>Submit</button>
+            {game.solved || game.lost ?
+                <button className="px-[15py] rounded-full font-semibold min-w-[7.5em] h-[3em] w-fit" style={{ border: "1px solid black" }}>View Results</button> :
+                <>
+                    <button className="px-[15py] rounded-full font-semibold min-w-[5.5em] h-[3em] w-fit" onClick={shuffle} style={{ border: "1px solid black" }}>Shuffle</button>
+                    <button className="px-[15py] rounded-full font-semibold min-w-[7.5em] h-[3em] w-fit" style={{ border: `1px solid ${deslectDisable ? "grey" : "black"}`, color: `${deslectDisable ? "grey" : "black"}` }} disabled={deslectDisable} onClick={deselectAll}>Deselect all</button>
+                    <button className="px-[15py] rounded-full font-semibold min-w-[5.5em] h-[3em] w-fit" style={{ border: `1px solid ${submitDisable ? "grey" : "black"}`, color: `${submitDisable ? "grey" : "black"}` }} disabled={submitDisable} onClick={submit}>Submit</button>
+                </>}
         </div>
     )
 }

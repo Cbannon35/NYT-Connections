@@ -3,6 +3,7 @@
  * @class 
  * @property {String} id - The id of the game, typically the date in YYYY-MM-DD format
  * @property {Boolean} solved - Whether the game has been solved
+ * @property {Boolean} lost - Whether the game has been lost
  * @property {String[]} words - The words in the game
  * @property {String[]} categories - The categories of the words the user finds
  * @property {String[][]} guesses - The guesses made by the user
@@ -20,6 +21,8 @@ export class ClientGame {
      */
     constructor(id, words) {
         this.id = id;
+        this.solved = false;
+        this.lost = false;
         this.words = words;
         this.categories = [];
         this.guesses = [];
@@ -67,22 +70,22 @@ const testCategories = [
     {
         "key": 0,
         "category": "Chris's housemates",
-        "words": ["Josh", "Pandy", "Candy", "Vaishak"]
+        "words": ['Candy', 'Josh', 'Pandy', 'Vaishak']
     },
     {
         "key": 1,
         "category": "Mexican food",
-        "words": ["Chilaquiles", "Burrito", "Taco", "Fajitas"]
+        "words": ['Burrito', 'Chilaquiles', 'Fajitas', 'Taco']
     },
     {
         "key": 2,
         "category": "Chris's plants",
-        "words": ["Aloe", "Snake", "Jade", "Basil"]
+        "words": ['Aloe', 'Basil', 'Jade', 'Snake']
     },
     {
         "key": 3,
         "category": "Chris's Shoes",
-        "words": ["All Stars", "530", "993", "Air Force"]
+        "words": ['530', '993', 'Air Force', 'All Stars']
     }
 ]
 export const testGame = new Game("test", testCategories);
@@ -124,8 +127,11 @@ export function checkTestGuess(guess) {
         return false;
     }
     const sortedGuess = guess.slice().sort();
+    console.log("Sorted guess: ", sortedGuess);
     for (let cat of testGame.categories) {
+        console.log("Checking category: ", cat.category);
         let words = cat.words;
+        console.log("Words: ", words);
         if (sortedGuess.join('') === words.join('')) {
             return cat.category;
         }
