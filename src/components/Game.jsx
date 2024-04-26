@@ -3,7 +3,7 @@ import Board from "./Board";
 import Menu from './Menu'
 import { getShuffledTestWords } from '../utils/games'
 
-const { ClientGame } = require('../utils/games');
+const { ClientGame } = require('../utils/types');
 
 const Game = ({ gameID }) => {
 
