@@ -1,5 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { Route, createBrowserRouter, RouterProvider, createRoutesFromElements, useNavigate } from 'react-router-dom';
+import Header from './components/Header'
 import Game from './components/Game'
+import RedirectToDate from './components/Redirect'
 import './App.css'
 
 const myDate = new Date();
@@ -13,12 +16,19 @@ function formatDate(date) {
 const formattedDate = formatDate(myDate);
 console.log("Today's Date: ", formattedDate);
 
-function App() {
-  const [gameID, setGameID] = useState("test");
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<Header />}>
+      <Route index element={<RedirectToDate />} />
+      <Route path=":date" element={<Game />} />
+    </Route>
+  )
+)
 
+function App() {
   return (
     <>
-      <Game gameID={gameID} />
+      <RouterProvider router={router} />
     </>
   )
 }

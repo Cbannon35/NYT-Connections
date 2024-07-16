@@ -126,13 +126,11 @@ export function checkTestGuess(guess) {
         console.log("Invalid guess length");
         return false;
     }
-    const sortedGuess = guess.slice().sort();
-    console.log("Sorted guess: ", sortedGuess);
     for (let cat of testGame.categories) {
         console.log("Checking category: ", cat.category);
         let words = cat.words;
         console.log("Words: ", words);
-        if (sortedGuess.join('') === words.join('')) {
+        if (guess.join('') === words.join('')) {
             return cat.category;
         }
     }
