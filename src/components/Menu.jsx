@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 
-
 function arraysEqual(a, b) {
     if (a === b) return true;
     if (a == null || b == null) return false;
@@ -48,7 +47,6 @@ const Menu = ({ game, setGame }) => {
             }
         }
 
-        game.guesses.push(guess);
         const url = `http://localhost:8000/${game.id}/guess`;
         try {
             const response = await fetch(url, {
@@ -64,6 +62,7 @@ const Menu = ({ game, setGame }) => {
             const data = await response.json();
             console.log(data);
             const guess_level = data.data.level;
+            game.guesses.push(guess);
             if (guess_level == -1) {
                 console.log("Incorrect guess");
                 setGame(prevGame => ({
