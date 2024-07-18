@@ -1,6 +1,6 @@
 
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import React from 'react';
 
 function formatDate(date) {
@@ -20,7 +20,7 @@ const RedirectToDate = () => {
     }, []);
 
     return (
-        <div>Hi</div>
+        <div>If you see this page something went wrong. Please navigate <Link href={`/${formattedDate}`}>here.</Link></div>
     );
 };
 

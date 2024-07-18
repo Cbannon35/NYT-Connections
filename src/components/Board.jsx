@@ -32,7 +32,7 @@ const Board = ({ game, setGame }) => {
     }
 
     return (
-        <section className='boardContainer my-[24px] m-auto'>
+        <section className='boardContainer m-auto'>
             {game.categories.map((category, index) => (
                 <section
                     key={index}

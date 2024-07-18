@@ -8,6 +8,7 @@ const Word = ({ word, guessWord, selectedCount, selected }) => {
   let canTap = selectedCount < 4 || selected;
   return (
     <motion.div
+      initial={{ backgroundColor: bgColor, color: textColor }}
       whileTap={canTap ? { scale: 0.9 } : undefined}
       animate={{ backgroundColor: bgColor, color: textColor }}
       className="rounded-md select-none text-[16px] sm:text-[20px] text-center content-center"
@@ -20,7 +21,13 @@ const Word = ({ word, guessWord, selectedCount, selected }) => {
       }}
 
     >
-      <strong>{word}</strong>
+      <motion.strong
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+      >
+        {word}
+      </motion.strong>
     </motion.div>
   );
 }
