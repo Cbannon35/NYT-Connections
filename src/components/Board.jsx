@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Word from './Word'
-import { checkTestGuess } from '../utils/game';
 import { ClientGame } from '../utils/game';
+
+import { getColor, COLORS } from '../utils/game';
 
 /**
  * The Board component
@@ -31,20 +32,30 @@ const Board = ({ game, setGame }) => {
     }
 
     return (
-        <div className='flex flex-col justify-center boardContainer my-[24px]'>
-            <div className='flex flex-col gap-[8px]'>
-                {game.categories.map((category, index) => (
-                    <div key={index}>
-                        <span>{category}</span>
-                    </div>
-                ))}
-            </div>
-            <div className='cardContainer cardContainer2' >
-                {game.words.map((word, index) => (
-                    <Word key={index} word={word} guessWord={guessWord} selectedCount={game.currentGuess.length} selected={game.currentGuess.includes(word)} />
-                ))}
-            </div>
-        </div>
+        <section className='boardContainer my-[24px] m-auto'>
+            {game.categories.map((category, index) => (
+                <section
+                    key={index}
+                    style={{ backgroundColor: getColor(category.level) }}
+                    className='rounded-md leading-[19px] flex flex-col justify-center items-center col-span-4'
+                >
+                    <h3 className='font-bold'>{category.group}</h3>
+                    <ol>
+                        {category.words.map((word, index) => (
+                            <li
+                                key={index}
+                                className='inline'
+                            >
+                                {word}{index < category.words.length - 1 ? ',' : ''}{' '}
+                            </li>
+                        ))}
+                    </ol>
+                </section>
+            ))}
+            {game.words.map((word, index) => (
+                <Word key={index} word={word} guessWord={guessWord} selectedCount={game.currentGuess.length} selected={game.currentGuess.includes(word)} />
+            ))}
+        </section>
     )
 }
 

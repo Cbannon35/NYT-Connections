@@ -11,13 +11,11 @@ function formatDate(date) {
 }
 
 const RedirectToDate = () => {
-    console.log("yo")
     const navigate = useNavigate();
     const myDate = new Date();
     const formattedDate = formatDate(myDate);
 
     useEffect(() => {
-        console.log("hi")
         navigate(`/${formattedDate}`);
     }, []);
 

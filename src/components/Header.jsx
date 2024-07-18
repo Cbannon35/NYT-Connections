@@ -1,21 +1,19 @@
 import React from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useParams } from 'react-router-dom';
+import { deleteItem } from '../utils/indexedDB';
 
 
 const Header = () => {
+
+    const date = useParams().date;
+
     return (
         <>
             <Outlet />
             <header>
-                <h1>My Website</h1>
-                <nav>
-                    <ul>
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/about">About</a></li>
-                        <li><a href="/contact">Contact</a></li>
-                    </ul>
-                </nav>
-                <Link to="2024-12-22">Home</Link>
+                <button onClick={() => deleteItem(date)}>
+                    Reset
+                </button>
             </header>
         </>
     );

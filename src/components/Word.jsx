@@ -12,9 +12,13 @@ const Word = ({ word, guessWord, selectedCount, selected }) => {
       animate={{ backgroundColor: bgColor, color: textColor }}
       className="rounded-md select-none text-[16px] sm:text-[20px] text-center content-center"
       style={{ cursor: canTap ? "pointer" : "" }}
-      onMouseDown={() => {
+      // onMouseDown={() => {
+      //   guessWord(word);
+      // }}
+      onTapStart={() => {
         guessWord(word);
       }}
+
     >
       <strong>{word}</strong>
     </motion.div>

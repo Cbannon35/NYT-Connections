@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import Board from "./Board";
 import Menu from './Menu'
-import { getShuffledTestWords } from '../utils/game.js';
 import { openDB, addItem, getItem } from '../utils/indexedDB.js';
 import { ClientGame } from '../utils/game.js';
 
@@ -22,7 +21,7 @@ const Game = () => {
         setLoaded(false);
 
         // const URL = `https://nyt-connections.up.railway.app/${date}/words`;
-        const URL = "http://localhost:8000/2024-01-01/words";
+        const URL = `http://localhost:8000/${date}/words`;
         async function fetchGame() {
             // attempt to read from indexedDB
             try {
@@ -67,9 +66,7 @@ const Game = () => {
 
     return (
         <div className='flex flex-col gap-[20px]'>
-            <section>
-                <Board game={game} setGame={setGame} />
-            </section>
+            <Board game={game} setGame={setGame} />
             <section>
                 <div className='flex justify-center'>
                     <p className='flex flex-row items-center gap-[10px]'>

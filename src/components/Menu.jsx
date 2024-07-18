@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { getShuffledTestWords, checkTestGuess } from '../utils/game'
+
 
 function arraysEqual(a, b) {
     if (a === b) return true;
     if (a == null || b == null) return false;
     if (a.length !== b.length) return false;
 
-    // If you don't care about the order of the elements inside
-    // the array, you should sort both arrays here.
-    // Please note that calling sort on an array will modify that array.
-    // you might want to clone your array first.
+    a = a.slice().sort();
+    b = b.slice().sort();
 
     for (var i = 0; i < a.length; ++i) {
         if (a[i] !== b[i]) return false;
@@ -30,10 +28,11 @@ const Menu = ({ game, setGame }) => {
     }
 
     function shuffle() {
-        setGame(prevGame => ({
-            ...prevGame,
-            words: getShuffledTestWords()
-        }));
+        setGame(prevGame => {
+            const newGame = { ...prevGame };
+            newGame.words = newGame.words.sort(() => Math.random() - 0.5);
+            return newGame;
+        });
     }
 
     async function submit() {
@@ -42,9 +41,8 @@ const Menu = ({ game, setGame }) => {
             return;
         }
         const guess = game.currentGuess;
-        const sortedGuess = guess.slice().sort();
-        for (let guess of game.guesses) {
-            if (arraysEqual(sortedGuess, guess.slice().sort())) {
+        for (let prev_guess of game.guesses) {
+            if (arraysEqual(guess, prev_guess)) {
                 console.log("Already guessed this combination");
                 return;
             }
@@ -65,7 +63,7 @@ const Menu = ({ game, setGame }) => {
             }
             const data = await response.json();
             console.log(data);
-            const guess_level = data.data;
+            const guess_level = data.data.level;
             if (guess_level == -1) {
                 console.log("Incorrect guess");
                 setGame(prevGame => ({
@@ -77,7 +75,11 @@ const Menu = ({ game, setGame }) => {
                 console.log("Correct guess: ", guess_level);
                 setGame(prevGame => ({
                     ...prevGame,
-                    categories: [...prevGame.categories, guess_level],
+                    categories: [...prevGame.categories, {
+                        level: guess_level,
+                        group: data.data.group,
+                        words: guess
+                    }],
                     currentGuess: [],
                     words: [...prevGame.words.filter(word => !prevGame.currentGuess.includes(word))],
                     solved: prevGame.categories.length >= 3
