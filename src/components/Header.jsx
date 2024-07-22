@@ -8,9 +8,11 @@ import BottomSheet from './BottomSheet';
 const Header = () => {
 
     const date = useParams().date;
+    if (date === undefined) {
+        return <Outlet />
+    }
 
     const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
-
     return (
         <>
             <Outlet />

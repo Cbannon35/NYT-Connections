@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import { Route, createBrowserRouter, RouterProvider, createRoutesFromElements, useNavigate } from 'react-router-dom';
 import Header from './components/Header'
 import Game from './components/Game'
-import RedirectToDate from './components/Redirect'
 import './App.css'
+import SplashScreen from './components/SplashScreen';
 
 const myDate = new Date();
 function formatDate(date) {
@@ -19,7 +19,7 @@ console.log("Today's Date: ", formattedDate);
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Header />}>
-      <Route index element={<RedirectToDate />} />
+      <Route index element={<SplashScreen />} />
       <Route path=":date" element={<Game />} />
     </Route>
   )

@@ -5,6 +5,13 @@ import Menu from './Menu'
 import { openDB, addItem, getItem } from '../utils/indexedDB.js';
 import { ClientGame } from '../utils/game.js';
 
+const textDate = (date) => {
+    let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const [year, month, day] = date.split('-');
+    return `${monthNames[parseInt(month) - 1]} ${day}, ${year}`;
+}
+
+
 const Game = () => {
 
     const date = useParams().date;
@@ -66,6 +73,10 @@ const Game = () => {
 
     return (
         <div className='flex flex-col gap-[18px]'>
+            <header className='border-b border-black pt-8'>
+                <h1 className='text-center text-3xl sm:text-4xl'><span>{textDate(date)}</span>
+                </h1>
+            </header>
             <div className='text-center'>Create four groups of four!</div>
             <Board game={game} setGame={setGame} />
             <section>

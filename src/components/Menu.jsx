@@ -35,6 +35,7 @@ const Menu = ({ game, setGame }) => {
     }
 
     async function submit() {
+        console.log("Submitting guess");
         if (game.currentGuess.length != 4) {
             console.log("Somehow submit was clicked without 4 words selected")
             return;

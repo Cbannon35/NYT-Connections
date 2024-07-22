@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'karnak': ['Karnak', 'sans-serif'],
+      },
       colors: {
         'word-bg': 'rgb(239, 239, 230)',
         'word-bg-selected': 'rgb(90, 89, 78)',
