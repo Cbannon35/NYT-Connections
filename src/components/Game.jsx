@@ -27,8 +27,7 @@ const Game = () => {
     useEffect(() => {
         setLoaded(false);
 
-        // const URL = `https://nyt-connections.up.railway.app/${date}/words`;
-        const URL = `http://localhost:8000/${date}/words`;
+        const URL = `${import.meta.env.VITE_FAST_API_ENDPOINT}/${date}/words`;
         async function fetchGame() {
             // attempt to read from indexedDB
             try {

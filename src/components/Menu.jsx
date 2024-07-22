@@ -48,7 +48,7 @@ const Menu = ({ game, setGame }) => {
             }
         }
 
-        const url = `http://localhost:8000/${game.id}/guess`;
+        const url = `${import.meta.env.VITE_FAST_API_ENDPOINT}/${game.id}/guess`;
         try {
             const response = await fetch(url, {
                 method: 'POST',
