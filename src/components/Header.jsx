@@ -19,7 +19,6 @@ function createCalendar(date) {
     let currentDate = date;
     const endDate = new Date(END_DATE);
     while (currentDate >= endDate) {
-        console.log("currentDate", currentDate);
         calendar.push(
             formatDate(currentDate)
         );
@@ -60,7 +59,7 @@ const Header = () => {
             </header>
             <Outlet />
             <BottomSheet isVisible={calendarSheet} title={"All Connections"} onClose={() => setCalendarSheet(false)}>
-                <Calendar calendar={calendar} />
+                <Calendar calendar={calendar} onClose={() => setCalendarSheet(false)} />
             </BottomSheet>
             <BottomSheet isVisible={hintSheet} onClose={() => setHintSheet(false)}>
                 <Hint />
