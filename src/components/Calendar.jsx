@@ -24,10 +24,10 @@ const renderMonth = (month, curr_month) => {
     }
 }
 
-const renderCalendar = (calendar, onClose) => {
+
+const Calendar = ({ calendar, onClose }) => {
     let [year, month, day] = calendar[0].split('-');
     month = ""
-
     return (
         <div
             className='flex flex-row gap-2 flex-wrap justify-center'
@@ -61,16 +61,7 @@ const renderCalendar = (calendar, onClose) => {
                     </>
                 );
             })}
-        </div >
-    );
-}
-
-
-const Calendar = ({ calendar, onClose }) => {
-    return (
-        <>
-            {renderCalendar(calendar, onClose)}
-        </>
+        </div>
     );
 };
 
