@@ -9,28 +9,26 @@ const Word = ({ word, guessWord, selectedCount, selected }) => {
   const textRef = useRef(null);
 
   useEffect(() => {
-    window.addEventListener('resize', () => {
+    function resize() {
       const box = boxRef.current;
       const text = textRef.current;
       if (!box || !text) return;
 
-      let maxFontSize = window.innerWidth < 640 ? 20 : 24;
+      let maxFontSize = window.innerWidth < 640 ? 16 : 20;
       let newFontSize = maxFontSize
-      const containerWidth = box.offsetWidth - 10;
+      const containerWidth = box.offsetWidth - 4;
       let textWidth = text.offsetWidth;
-
-      while ((textWidth < containerWidth) && newFontSize < maxFontSize) {
-        newFontSize += 1;
-        text.style.fontSize = `${newFontSize}px`;
-        textWidth = text.offsetWidth;
-      }
 
       while ((textWidth > containerWidth) && newFontSize > 0) {
         newFontSize -= 1;
         text.style.fontSize = `${newFontSize}px`;
         textWidth = text.offsetWidth;
       }
-    })
+      text.style.fontSize = `${newFontSize}px`;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
     return () => {
       window.removeEventListener('resize', () => {
         console.log('Removed');
@@ -52,15 +50,12 @@ const Word = ({ word, guessWord, selectedCount, selected }) => {
       }}
       ref={boxRef}
     >
-      <motion.strong
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
+      <strong
         className='text-[16px] sm:text-[20px]'
         ref={textRef}
       >
         {word}
-      </motion.strong>
+      </strong>
     </motion.div>
   );
 }

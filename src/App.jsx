@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { Route, createBrowserRouter, RouterProvider, createRoutesFromElements, useNavigate } from 'react-router-dom';
 import Header from './components/Header'
 import Game from './components/Game'
-import './App.css'
 import SplashScreen from './components/SplashScreen';
 
 const myDate = new Date();
