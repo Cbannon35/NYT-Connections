@@ -14,20 +14,34 @@ const Word = ({ word, guessWord, selectedCount, selected }) => {
       const text = textRef.current;
       if (!box || !text) return;
 
+      // ugh works sometimes and breaks othertimes...
       let maxFontSize = window.innerWidth < 640 ? 16 : 20;
-      let newFontSize = maxFontSize
+      let newFontSize = parseInt(window.getComputedStyle(text).fontSize);
       const containerWidth = box.offsetWidth - 4;
       let textWidth = text.offsetWidth;
 
+      // If window is getting larger, greedily increase font size
+      while ((textWidth < containerWidth) && newFontSize < maxFontSize) {
+        newFontSize += 1;
+        text.style.fontSize = `${newFontSize}px`;
+        textWidth = text.offsetWidth;
+      }
+
+      // Decrease font size until it fits
       while ((textWidth > containerWidth) && newFontSize > 0) {
         newFontSize -= 1;
         text.style.fontSize = `${newFontSize}px`;
         textWidth = text.offsetWidth;
       }
       text.style.fontSize = `${newFontSize}px`;
+      console.log('Resized', newFontSize);
     }
-    window.addEventListener('resize', resize);
-    resize();
+    // if word is 7 characters or more, resize font
+    if (word.length > 7) {
+      console.log("Adding resize event listener", word);
+      window.addEventListener('resize', resize);
+      resize();
+    }
 
     return () => {
       window.removeEventListener('resize', () => {

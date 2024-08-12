@@ -8,7 +8,6 @@ const SplashScreen = () => {
     const formattedDate = formatDate(new Date());
 
     const bgColor = BACKGROUND_COLORS[1];
-    console.log(bgColor)
 
     return (
         <>
@@ -17,7 +16,7 @@ const SplashScreen = () => {
                 <h1 className="text-4xl sm:text-6xl font-bold font-karnak">Connections</h1>
                 <Link to={formattedDate}>
                     <button
-                        className="px-[15py] rounded-full font-semibold min-w-[10em] h-[3em] w-fit bg-black text-white"
+                        className="px-[15px] rounded-full font-semibold min-w-[10em] h-[3em] w-fit bg-black text-white"
 
                     >
                         Play

@@ -7,17 +7,17 @@ const months = ["January", "February", "March", "April", "May", "June", "July", 
 const renderYear = (year, curr_year) => {
     if (year !== curr_year) {
         return (
-            <h3 className='text-2xl w-full'>{curr_year}</h3>
+            <h3 key={year} className='text-2xl w-full'>{curr_year}</h3>
         );
     } else {
         return null;
     }
 }
 
-const renderMonth = (month, curr_month) => {
+const renderMonth = (month, curr_month, year) => {
     if (month !== curr_month) {
         return (
-            <h3 className='text-2xl w-full'>{months[parseInt(curr_month, 10) - 1]}</h3>
+            <h3 key={year + "-" + month} className='text-2xl w-full'>{months[parseInt(curr_month, 10) - 1]}</h3>
         );
     } else {
         return null;
@@ -35,7 +35,7 @@ const Calendar = ({ calendar, onClose }) => {
             {calendar.map((date, index) => {
                 const [curr_year, curr_month, curr_day] = date.split('-');
                 const yearElem = renderYear(year, curr_year);
-                const monthElem = renderMonth(month, curr_month);
+                const monthElem = renderMonth(month, curr_month, year);
 
                 if (yearElem !== null) {
                     year = curr_year;
@@ -47,9 +47,8 @@ const Calendar = ({ calendar, onClose }) => {
                     <>
                         {yearElem}
                         {monthElem}
-                        <Link to={`/${date}`} >
+                        <Link to={`/${date}`} key={date} >
                             <motion.div
-                                key={index}
                                 className="rounded-md select-none text-center content-center cursor-pointer w-24 h-20"
                                 style={{ backgroundColor: '#EFEFE6' }}
                                 whileTap={{ scale: 0.9 }}

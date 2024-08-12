@@ -1,12 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const BottomSheet = ({ isVisible, onClose, title, children }) => {
+    const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
+
+    useEffect(() => {
+        const handleResize = () => setViewportHeight(window.innerHeight);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const initialY = viewportHeight * 0.35; // 35% from the top
+    const ref = useRef(null);
     return (
         <AnimatePresence>
             {isVisible && (
                 <>
                     <motion.div
+                        ref={ref}
                         className="w-screen h-screen bg-black bg-opacity-10 fixed top-0 left-0 z-1"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -14,14 +25,14 @@ const BottomSheet = ({ isVisible, onClose, title, children }) => {
                         onTap={onClose}
                     />
                     <motion.dialog
-                        className="fixed flex flex-col bottom-0 left-0 w-full bg-white p-4 z-2 rounded-t-xl max-h-[80vh]"
+                        className="fixed flex flex-col bottom-0 left-0 w-full bg-white p-4 z-3 rounded-t-xl h-[120vh]"
                         initial={{ y: "100%" }}
-                        animate={{ y: 0 }}
+                        animate={{ y: initialY }}
                         exit={{ y: "100%" }}
                         transition={{ type: "spring", stiffness: 600, damping: 35 }}
                         drag="y"
-                        dragConstraints={{ top: 0, bottom: 0 }}
-                        dragElastic={0.5}
+                        dragConstraints={{ top: initialY, bottom: initialY }}
+                        dragElastic={0.2}
                         onDragEnd={(event, info) => {
                             if (info.offset.y > 200) {
                                 onClose();

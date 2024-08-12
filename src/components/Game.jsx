@@ -65,7 +65,7 @@ const Game = () => {
 
     return (
         <div className='flex flex-col gap-[18px]'>
-            <div className='text-center'>Create four groups of four!</div>
+            <div className='text-center pt-4'>Create four groups of four!</div>
             <Board game={game} setGame={setGame} />
             <section>
                 <div className='flex justify-center'>

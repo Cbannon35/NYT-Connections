@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Outlet, useParams } from 'react-router-dom';
-import { deleteItem } from '../utils/indexedDB';
+import { clearItems, deleteItem } from '../utils/indexedDB';
 import { formatDate } from '../utils/game';
 import BottomSheet from './BottomSheet';
 import Calendar from './Calendar';
-import Hint from './Hint';
+import Hints from './Hint';
 import Help from './Help';
 
 const textDate = (date) => {
@@ -31,15 +31,16 @@ function createCalendar(date) {
 const Header = () => {
 
     const date = useParams().date;
-    if (date === undefined) {
-        return <Outlet />
-    }
 
     const [calendarSheet, setCalendarSheet] = useState(false);
     const [hintSheet, setHintSheet] = useState(false);
     const [helpSheet, setHelpSheet] = useState(false);
 
     const [calendar, setCalendar] = useState(createCalendar(new Date()));
+
+    if (date === undefined) {
+        return <Outlet />
+    }
 
     return (
         <>
@@ -55,16 +56,19 @@ const Header = () => {
                     <button onClick={() => setHelpSheet(true)}>
                         <svg width="24px" height="24px" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path><path d="M9 9C9 5.49997 14.5 5.5 14.5 9C14.5 11.5 12 10.9999 12 13.9999" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path><path d="M12 18.01L12.01 17.9989" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
                     </button>
+                    <button onClick={clearItems}>
+                        Clear
+                    </button>
                 </nav>
             </header>
             <Outlet />
             <BottomSheet isVisible={calendarSheet} title={"All Connections"} onClose={() => setCalendarSheet(false)}>
                 <Calendar calendar={calendar} onClose={() => setCalendarSheet(false)} />
             </BottomSheet>
-            <BottomSheet isVisible={hintSheet} onClose={() => setHintSheet(false)}>
-                <Hint />
+            <BottomSheet isVisible={hintSheet} title={"Hints"} onClose={() => setHintSheet(false)}>
+                <Hints />
             </BottomSheet>
-            <BottomSheet isVisible={helpSheet} onClose={() => setHelpSheet(false)}>
+            <BottomSheet isVisible={helpSheet} title={"Help"} onClose={() => setHelpSheet(false)}>
                 <Help />
             </BottomSheet>
         </>

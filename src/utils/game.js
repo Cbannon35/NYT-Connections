@@ -22,9 +22,24 @@ export const getColor = (level) => {
 
 /**
  * @typedef {Object} Category
- * @property {int} level - The color of the category: 0-3
+ * @property {number} level - The color of the category: 0-3
  * @property {string} group - The name of the category
  * @property {string[]} words - The words in the category
+ */
+
+/**
+ * @typedef Hint
+ * @type {object}
+ * @property {string} hint - The hint content
+ * @property {number} level - The level of the hint
+ * @property {date} date - The time of hint creation
+ */
+
+/**
+ * @typedef Result
+ * @type {object}
+ * @property {string} word - The word guessed
+ * @property {number} level - The level of the word
  */
 
 /**
@@ -34,8 +49,10 @@ export const getColor = (level) => {
  * @property {boolean} solved - Whether the game has been solved
  * @property {boolean} lost - Whether the game has been lost
  * @property {string[]} words - The words in the game
- * @property {Category[]} categories - The categories of the words the user finds
+ * @property {Category[]} categories - The categories of the words the user finds / revealed at the end of the game
  * @property {string[][]} guesses - The guesses made by the user
+ * @property {Result[][]} results - The results of the guesses made by the user
+ * @property {Hint[]} hints - The hints the user has received
  * @property {string[]} currentGuess - The current guess the user is making
  * @property {int} mistakes - The number of mistakes the user has made
  */
@@ -54,6 +71,8 @@ export class ClientGame {
         this.words = words;
         this.categories = [];
         this.guesses = [];
+        this.results = [];
+        this.hints = [];
         this.currentGuess = [];
         this.mistakes = 0;
     }
