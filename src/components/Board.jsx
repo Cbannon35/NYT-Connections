@@ -4,6 +4,7 @@ import { ClientGame } from '../utils/game';
 import "./Board.css"
 
 import { getColor, COLORS } from '../utils/game';
+import { addItem } from '../utils/indexedDB';
 
 /**
  * The Board component
@@ -14,6 +15,7 @@ import { getColor, COLORS } from '../utils/game';
 const Board = ({ game, setGame }) => {
 
     function guessWord(word) {
+        console.log('Guessing word:', word);
         if (game.currentGuess.includes(word)) {
             setGame(prevGame => ({
                 ...prevGame,
@@ -25,11 +27,14 @@ const Board = ({ game, setGame }) => {
         if (game.currentGuess.length >= 4) {
             return;
         }
+        console.log('Adding word to guess:', word);
 
-        setGame(prevGame => ({
-            ...prevGame,
-            currentGuess: [...prevGame.currentGuess, word]
-        }));
+        setGame(prevGame => {
+            const newGame = { ...prevGame };
+            newGame.currentGuess.push(word);
+            addItem(newGame.id, newGame);
+            return newGame;
+        });
     }
 
     return (

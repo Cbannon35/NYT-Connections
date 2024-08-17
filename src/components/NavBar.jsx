@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useParams, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const NavBar = () => {
     const [currentDate, setCurrentDate] = useState("");
@@ -14,7 +15,7 @@ const NavBar = () => {
     return (
         <nav className="w-full px-12 bottom-0 fixed pb-4 pt-4 border-t-black border-[1px] bg-white">
             <ul className='flex justify-between'>
-                <li>
+                <motion.li whileTap={{ scale: 0.9 }}>
                     <NavLink to="/games" end
                     >
                         {({ isActive, isPending, isTransitioning }) => (
@@ -23,8 +24,8 @@ const NavBar = () => {
                             </div>
                         )}
                     </NavLink>
-                </li>
-                <li>
+                </motion.li>
+                <motion.li whileTap={{ scale: 0.9 }}>
                     <NavLink to={`/${currentDate}`}
                     >
                         {({ isActive, isPending, isTransitioning }) => (
@@ -33,8 +34,8 @@ const NavBar = () => {
                             </div>
                         )}
                     </NavLink>
-                </li>
-                <li>
+                </motion.li>
+                <motion.li whileTap={{ scale: 0.9 }}>
                     <NavLink to="/profile" end
                     >
                         {({ isActive, isPending, isTransitioning }) => (
@@ -43,7 +44,7 @@ const NavBar = () => {
                             </div>
                         )}
                     </NavLink>
-                </li>
+                </motion.li>
             </ul>
         </nav >
     );

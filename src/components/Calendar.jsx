@@ -7,7 +7,7 @@ const months = ["January", "February", "March", "April", "May", "June", "July", 
 const renderYear = (year, curr_year) => {
     if (year !== curr_year) {
         return (
-            <h3 key={year} className='text-2xl w-full'>{curr_year}</h3>
+            <h3 key={curr_year} className='text-2xl w-full'>{curr_year}</h3>
         );
     } else {
         return null;
@@ -17,7 +17,7 @@ const renderYear = (year, curr_year) => {
 const renderMonth = (month, curr_month, year) => {
     if (month !== curr_month) {
         return (
-            <h3 key={year + "-" + month} className='text-2xl w-full'>{months[parseInt(curr_month, 10) - 1]}</h3>
+            <h3 key={year + "-" + curr_month} className='text-2xl w-full'>{months[parseInt(curr_month, 10) - 1]}</h3>
         );
     } else {
         return null;
@@ -33,9 +33,10 @@ const Calendar = ({ calendar }) => {
             className='flex flex-row gap-2 flex-wrap justify-center'
         >
             {calendar.map((date, index) => {
+                // console.log("date", date, "index", index)
                 const [curr_year, curr_month, curr_day] = date.split('-');
                 const yearElem = renderYear(year, curr_year);
-                const monthElem = renderMonth(month, curr_month, year);
+                const monthElem = renderMonth(month, curr_month, curr_year);
 
                 if (yearElem !== null) {
                     year = curr_year;
@@ -44,7 +45,7 @@ const Calendar = ({ calendar }) => {
                     month = curr_month;
                 }
                 return (
-                    <>
+                    <React.Fragment key={index}>
                         {yearElem}
                         {monthElem}
                         <NavLink to={`/${date}`} key={date} >
@@ -56,7 +57,7 @@ const Calendar = ({ calendar }) => {
                                 <h3 className='text-2xl'>{curr_day}</h3>
                             </motion.div>
                         </NavLink>
-                    </>
+                    </React.Fragment>
                 );
             })}
         </div>

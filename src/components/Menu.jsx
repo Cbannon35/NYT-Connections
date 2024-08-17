@@ -37,6 +37,7 @@ const Menu = ({ game, setGame }) => {
             ...prevGame,
             currentGuess: []
         }));
+        addItem(game.id, game);
     }
 
     function shuffle() {
@@ -45,6 +46,7 @@ const Menu = ({ game, setGame }) => {
             newGame.words = newGame.words.sort(() => Math.random() - 0.5);
             return newGame;
         });
+        addItem(game.id, game);
     }
 
     useEffect(() => {
@@ -121,6 +123,11 @@ const Menu = ({ game, setGame }) => {
                     mistakes: prevGame.mistakes + 1,
                     lost: prevGame.mistakes >= 3
                 }));
+                addItem(game.id, {
+                    ...game,
+                    mistakes: game.mistakes + 1,
+                    lost: game.mistakes >= 3
+                });
             } else {
                 console.log("Correct guess: ", guess_level);
                 setGame(prevGame => ({
