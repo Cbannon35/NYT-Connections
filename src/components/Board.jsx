@@ -15,19 +15,19 @@ import { addItem } from '../utils/indexedDB';
 const Board = ({ game, setGame }) => {
 
     function guessWord(word) {
-        console.log('Guessing word:', word);
         if (game.currentGuess.includes(word)) {
-            setGame(prevGame => ({
-                ...prevGame,
-                currentGuess: prevGame.currentGuess.filter(guess => guess !== word)
-            }));
+            setGame(prevGame => {
+                const newGame = { ...prevGame };
+                newGame.currentGuess = newGame.currentGuess.filter(w => w !== word);
+                addItem(newGame.id, newGame);
+                return newGame;
+            });
             return;
         }
 
         if (game.currentGuess.length >= 4) {
             return;
         }
-        console.log('Adding word to guess:', word);
 
         setGame(prevGame => {
             const newGame = { ...prevGame };
