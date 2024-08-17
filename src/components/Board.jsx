@@ -31,7 +31,7 @@ const Board = ({ game, setGame }) => {
 
         setGame(prevGame => {
             const newGame = { ...prevGame };
-            newGame.currentGuess.push(word);
+            newGame.currentGuess = [...newGame.currentGuess, word];
             addItem(newGame.id, newGame);
             return newGame;
         });
