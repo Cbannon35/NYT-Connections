@@ -17,7 +17,7 @@ const Word = ({ word, guessWord, selectedCount, selected }) => {
       // ugh works sometimes and breaks othertimes...
       let maxFontSize = window.innerWidth < 640 ? 16 : 20;
       let newFontSize = parseInt(window.getComputedStyle(text).fontSize);
-      const containerWidth = box.offsetWidth - 4;
+      const containerWidth = box.offsetWidth - 12;
       let textWidth = text.offsetWidth;
 
       // If window is getting larger, greedily increase font size
@@ -57,7 +57,7 @@ const Word = ({ word, guessWord, selectedCount, selected }) => {
       initial={{ backgroundColor: bgColor, color: textColor }}
       whileTap={canTap ? { scale: 0.9 } : undefined}
       animate={{ backgroundColor: bgColor, color: textColor }}
-      className={`rounded-md select-none text-center content-center overflow-hidden`}
+      className={`rounded-md select-none text-center content-center overflow-hidden whitespace-nowrap`}
       style={{ cursor: canTap ? "pointer" : "" }}
       onTapStart={() => {
         guessWord(word);

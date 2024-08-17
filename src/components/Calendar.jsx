@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion'
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -25,7 +25,7 @@ const renderMonth = (month, curr_month, year) => {
 }
 
 
-const Calendar = ({ calendar, onClose }) => {
+const Calendar = ({ calendar }) => {
     let [year, month, day] = calendar[0].split('-');
     month = ""
     return (
@@ -47,16 +47,15 @@ const Calendar = ({ calendar, onClose }) => {
                     <>
                         {yearElem}
                         {monthElem}
-                        <Link to={`/${date}`} key={date} >
+                        <NavLink to={`/${date}`} key={date} >
                             <motion.div
                                 className="rounded-md select-none text-center content-center cursor-pointer w-24 h-20"
                                 style={{ backgroundColor: '#EFEFE6' }}
                                 whileTap={{ scale: 0.9 }}
-                                onClick={onClose}
                             >
                                 <h3 className='text-2xl'>{curr_day}</h3>
                             </motion.div>
-                        </Link>
+                        </NavLink>
                     </>
                 );
             })}
