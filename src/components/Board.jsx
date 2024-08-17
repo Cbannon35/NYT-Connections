@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Word from './Word'
 import { ClientGame } from '../utils/game';
 import "./Board.css"
 
-import { getColor, COLORS } from '../utils/game';
+import { getColor } from '../utils/game';
 import { addItem } from '../utils/indexedDB';
 
 /**
