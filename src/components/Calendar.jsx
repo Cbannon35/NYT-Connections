@@ -11,12 +11,10 @@ const Calendar = () => {
     const scrollPositionKey = 'scrollPosition';
 
     useEffect(() => {
-        console.log("useEffect", contentRef.current)
         // Ensure the div is mounted before interacting with it
         if (contentRef.current) {
             // Check if there is a saved scroll position
             const savedScrollPosition = localStorage.getItem(scrollPositionKey);
-            console.log("got savedScrollPosition", savedScrollPosition)
 
             if (savedScrollPosition) {
                 contentRef.current.scrollTop = parseInt(savedScrollPosition, 10);
@@ -31,7 +29,6 @@ const Calendar = () => {
 
             // Save the scroll position when the user scrolls
             const handleScroll = () => {
-                console.log('scrolling')
                 if (contentRef.current) {
                     console.log("contentRef.current.scrollTop", contentRef.current.scrollTop)
                     localStorage.setItem(

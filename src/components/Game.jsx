@@ -4,6 +4,7 @@ import Board from "./Board";
 import Menu from './Menu'
 import { openDB, addItem, getItem } from '../utils/indexedDB.js';
 import { ClientGame } from '../utils/game.js';
+import Spinner from './Spinner.jsx';
 
 const MAX_RETRIES = 5;
 const RETRY_DELAY = 1000; // 1 sec
@@ -87,7 +88,9 @@ const Game = () => {
 
     if (!loaded) {
         return (
-            <div className='mt-16'>Loading...</div>
+            <div className='w-full h-screen flex justify-center items-center'>
+                <Spinner color={"black"} width={"20px"} height={"20px"} />
+            </div>
         )
     }
 

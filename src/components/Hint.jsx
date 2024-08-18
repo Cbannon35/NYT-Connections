@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { COLORS, BACKGROUND_COLORS } from '../utils/game';
 import { getItem, addItem } from '../utils/indexedDB';
 import LevelSelect from './LevelSelect';
+import Spinner from './Spinner';
 
 const Portal = ({ children }) => {
     return ReactDOM.createPortal(
@@ -13,13 +14,6 @@ const Portal = ({ children }) => {
         document.body
     );
 };
-
-const loadingCircleTransition = {
-    duration: 0.5,
-    ease: "easeInOut",
-    repeat: Infinity,
-    repeatType: "reverse",
-}
 
 const Hints = () => {
     const date = useParams().date;
@@ -39,7 +33,6 @@ const Hints = () => {
     useEffect(() => {
         getItem(date).then((result) => {
             if (result) {
-                console.log("Found game in indexedDB", result.game)
                 setGame(result.game);
                 setLoadingGame(false);
             }
@@ -61,7 +54,6 @@ const Hints = () => {
                 },
                 body: JSON.stringify({ level: hintLevel, prev_hints: prevGuesses }),
             })
-            console.log(response)
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -90,11 +82,12 @@ const Hints = () => {
         <>
             {game.hints.length === 0 ?
                 <h1>Hints you generate will appear here!</h1> :
-                console.log(game.hints) ||
-                <div className="flex flex-col gap-4 items-center px-8">
+                <div className="flex flex-col gap-4 items-center px-8 overflow-scroll">
                     {game.hints.map((hint, index) => (
                         <motion.div
                             // whileTap={{ scale: 0.85 }}
+                            initial={{ width: 0 }}
+                            animate={{ width: "100%" }}
                             key={index}
                             className='flex flex-row gap-4 items-center w-full h-24 md:text-[20px] text-[16px] font-bold rounded-3xl text-center px-4'
                             style={{ backgroundColor: COLORS[hint.level] }}>
@@ -114,11 +107,11 @@ const Hints = () => {
                 >
 
 
-                    <LevelSelect hintLevel={hintLevel} setHintLevel={setHintLevel} />
+                    <LevelSelect generating={!canTap} hintLevel={hintLevel} setHintLevel={setHintLevel} />
 
 
                     <motion.button
-                        className="px-[15px] rounded-full font-semibold min-w-[5.5em] h-[3em] w-40 text-white bg-black flex justify-center items-center gap-2"
+                        className="px-[15px] rounded-full font-semibold min-w-[5.5em] h-[3em] w-40 text-white bg-black flex justify-center items-center gap-2 select-none"
                         style={{ backgroundColor: canTap ? "black" : "grey" }}
                         whileTap={canTap ? { scale: 0.9 } : undefined}
                         disabled={!canTap}
@@ -128,28 +121,7 @@ const Hints = () => {
                             <>Generate < svg width="18px" height="18px" viewBox="0 0 24 24" strokeWidth="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#FFFFFF" aria-hidden="true"><path d="M3 21L13 11M18 6L15.5 8.5" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path><path d="M9.5 2L10.4453 4.55468L13 5.5L10.4453 6.44532L9.5 9L8.55468 6.44532L6 5.5L8.55468 4.55468L9.5 2Z" stroke="#FFFFFF" strokeWidth="1.5" strokeLinejoin="round"></path><path d="M19 10L19.5402 11.4598L21 12L19.5402 12.5402L19 14L18.4598 12.5402L17 12L18.4598 11.4598L19 10Z" stroke="#FFFFFF" strokeWidth="1.5" strokeLinejoin="round"></path></svg></>
                             :
                             <>Generating
-                                <motion.div
-                                    className='flex flex-row gap-1'
-                                    variants={{ start: { transition: { staggerChildren: 0.1 } }, end: { transition: { staggerChildren: 0.1 } } }}
-                                    initial="start"
-                                    animate="end"
-                                >
-                                    <motion.span
-                                        className='rounded-full w-2 h-2 bg-white'
-                                        variants={{ start: { y: "-25%" }, end: { y: "75%" } }}
-                                        transition={loadingCircleTransition}
-                                    />
-                                    <motion.span
-                                        className='rounded-full w-2 h-2 bg-white'
-                                        variants={{ start: { y: "-25%" }, end: { y: "75%" } }}
-                                        transition={loadingCircleTransition}
-                                    />
-                                    <motion.span
-                                        className='rounded-full w-2 h-2 bg-white'
-                                        variants={{ start: { y: "-25%" }, end: { y: "75%" } }}
-                                        transition={loadingCircleTransition}
-                                    />
-                                </motion.div>
+                                <Spinner />
                             </>
                         }
                     </motion.button>

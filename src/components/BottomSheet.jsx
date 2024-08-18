@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const BottomSheet = ({ isVisible, onClose, title, children }) => {
     const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
+    const ref = useRef(null);
 
     useEffect(() => {
         const handleResize = () => setViewportHeight(window.innerHeight);
@@ -10,8 +11,24 @@ const BottomSheet = ({ isVisible, onClose, title, children }) => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    useEffect(() => {
+        console.log(ref.current)
+        const preventScroll = (event) => {
+            console.log("Preventing scroll")
+            event.preventDefault()
+        };
+        if (ref.current) {
+            ref.current.addEventListener('touchmove', preventScroll, { passive: false });
+        }
+        return () => {
+            if (ref.current) {
+                ref.current.removeEventListener('touchmove', preventScroll);
+            }
+        };
+    }, [ref]);
+
     const initialY = viewportHeight * 0.35; // 35% from the top
-    const ref = useRef(null);
+
     return (
         <AnimatePresence>
             {isVisible && (
@@ -19,20 +36,21 @@ const BottomSheet = ({ isVisible, onClose, title, children }) => {
                     <motion.div
                         ref={ref}
                         className="w-screen h-screen bg-black bg-opacity-10 fixed top-0 left-0 z-1"
+                        id={"backdrop"}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onTap={onClose}
                     />
                     <motion.dialog
-                        className="fixed flex flex-col bottom-0 left-0 w-full bg-white p-4 z-3 rounded-t-xl h-[120vh]"
+                        className="fixed flex flex-col bottom-0 left-0 w-full bg-white p-4 z-3 rounded-t-xl min-h-[60vh]"
                         initial={{ y: "100%" }}
                         animate={{ y: initialY }}
                         exit={{ y: "100%" }}
                         transition={{ type: "spring", stiffness: 600, damping: 35 }}
                         drag="y"
                         dragConstraints={{ top: initialY, bottom: initialY }}
-                        dragElastic={0.2}
+                        dragElastic={0.1}
                         onDragEnd={(event, info) => {
                             if (info.offset.y > 200) {
                                 onClose();
@@ -46,7 +64,7 @@ const BottomSheet = ({ isVisible, onClose, title, children }) => {
                                 <svg width="24px" height="24px" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M6.75827 17.2426L12.0009 12M17.2435 6.75736L12.0009 12M12.0009 12L6.75827 6.75736M12.0009 12L17.2435 17.2426" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
                             </button>
                         </div>
-                        <div className="overflow-y-auto pt-2">
+                        <div className="overflow-y-scroll pt-2">
                             {children}
                         </div>
                     </motion.dialog>
@@ -57,3 +75,9 @@ const BottomSheet = ({ isVisible, onClose, title, children }) => {
 };
 
 export default BottomSheet;
+
+
+
+
+
+
