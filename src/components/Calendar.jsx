@@ -1,67 +1,69 @@
-import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import { motion } from 'framer-motion'
+import React, { Component, useRef, useEffect } from 'react';
+import moment from 'moment';
+import ScrollCalendar from './ScrollCalender';
 
-const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const END_DATE = "2023-06-12";
 
-const renderYear = (year, curr_year) => {
-    if (year !== curr_year) {
-        return (
-            <h3 key={curr_year} className='text-2xl w-full'>{curr_year}</h3>
-        );
-    } else {
-        return null;
-    }
-}
+const Calendar = () => {
+    const contentRef = useRef(null);
 
-const renderMonth = (month, curr_month, year) => {
-    if (month !== curr_month) {
-        return (
-            <h3 key={year + "-" + curr_month} className='text-2xl w-full'>{months[parseInt(curr_month, 10) - 1]}</h3>
-        );
-    } else {
-        return null;
-    }
-}
+    // Key for storing the scroll position
+    const scrollPositionKey = 'scrollPosition';
 
+    useEffect(() => {
+        console.log("useEffect", contentRef.current)
+        // Ensure the div is mounted before interacting with it
+        if (contentRef.current) {
+            // Check if there is a saved scroll position
+            const savedScrollPosition = localStorage.getItem(scrollPositionKey);
+            console.log("got savedScrollPosition", savedScrollPosition)
 
-const Calendar = ({ calendar }) => {
-    let [year, month, day] = calendar[0].split('-');
-    month = ""
+            if (savedScrollPosition) {
+                contentRef.current.scrollTop = parseInt(savedScrollPosition, 10);
+            } else {
+                // Scroll to bottom if no position is saved
+                const lastElement = document.getElementById('last-element');
+                if (lastElement) {
+                    console.log("scrolling to last element")
+                    lastElement.scrollIntoView({ behavior: 'auto', block: 'end' });
+                }
+            }
+
+            // Save the scroll position when the user scrolls
+            const handleScroll = () => {
+                console.log('scrolling')
+                if (contentRef.current) {
+                    console.log("contentRef.current.scrollTop", contentRef.current.scrollTop)
+                    localStorage.setItem(
+                        scrollPositionKey,
+                        contentRef.current.scrollTop
+                    );
+                }
+            };
+
+            contentRef.current.addEventListener('scroll', handleScroll);
+
+            // Cleanup event listener on unmount
+            return () => {
+                if (contentRef.current) {
+                    contentRef.current.removeEventListener('scroll', handleScroll);
+                }
+            };
+        }
+    }, [contentRef]); // Empty dependency array to ensure this effect runs only once
+
     return (
-        <div
-            className='flex flex-row gap-2 flex-wrap justify-center'
-        >
-            {calendar.map((date, index) => {
-                // console.log("date", date, "index", index)
-                const [curr_year, curr_month, curr_day] = date.split('-');
-                const yearElem = renderYear(year, curr_year);
-                const monthElem = renderMonth(month, curr_month, curr_year);
-
-                if (yearElem !== null) {
-                    year = curr_year;
-                }
-                if (monthElem !== null) {
-                    month = curr_month;
-                }
-                return (
-                    <React.Fragment key={index}>
-                        {yearElem}
-                        {monthElem}
-                        <NavLink to={`/${date}`} key={date} >
-                            <motion.div
-                                className="rounded-md select-none text-center content-center cursor-pointer w-24 h-20"
-                                style={{ backgroundColor: '#EFEFE6' }}
-                                whileTap={{ scale: 0.9 }}
-                            >
-                                <h3 className='text-2xl'>{curr_day}</h3>
-                            </motion.div>
-                        </NavLink>
-                    </React.Fragment>
-                );
-            })}
-        </div>
+        <React.Fragment>
+            <ScrollCalendar
+                ref={contentRef}
+                minDate={moment(END_DATE, 'YYYY-MM-DD')}
+                selectedDate={moment('2019-01-23', 'YYYY-MM-DD')}
+                maxDate={moment(new Date(), 'YYYY-MM-DD')}
+                className='overflow-y-scroll mb-16'
+            />
+            <div id='last-element'></div>
+        </React.Fragment>
     );
-};
+}
 
 export default Calendar;

@@ -65,7 +65,7 @@ const Word = ({ word, guessWord, selectedCount, selected }) => {
       ref={boxRef}
     >
       <strong
-        className='text-[16px] sm:text-[20px]'
+        className='text-[16px] md:text-[20px]'
         ref={textRef}
       >
         {word}

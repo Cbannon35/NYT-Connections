@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 import { COLORS, BACKGROUND_COLORS } from '../utils/game';
 import { getItem, addItem } from '../utils/indexedDB';
+import LevelSelect from './LevelSelect';
 
 const Portal = ({ children }) => {
     return ReactDOM.createPortal(
@@ -26,6 +27,14 @@ const Hints = () => {
     const [loadingGame, setLoadingGame] = useState(true);
     const [hintLevel, setHintLevel] = useState(0);
     const [canTap, setCanTap] = useState(true);
+    const [open, setOpen] = useState(false);
+    const toggleDropdown = () => setOpen(!open);
+    const filteredLevels = [...Array(4).keys()].filter(level => level !== hintLevel);
+
+    const handleOptionClick = (value) => {
+        setHintLevel(value);
+        setOpen(false);
+    };
 
     useEffect(() => {
         getItem(date).then((result) => {
@@ -87,7 +96,7 @@ const Hints = () => {
                         <motion.div
                             // whileTap={{ scale: 0.85 }}
                             key={index}
-                            className='flex flex-row gap-4 items-center w-full h-24 sm:text-[20px] text-[16px] font-bold rounded-full text-center px-4'
+                            className='flex flex-row gap-4 items-center w-full h-24 md:text-[20px] text-[16px] font-bold rounded-3xl text-center px-4'
                             style={{ backgroundColor: COLORS[hint.level] }}>
                             {hint.hint}
                         </motion.div>
@@ -103,20 +112,11 @@ const Hints = () => {
                     transition={{ type: "spring", stiffness: 650, damping: 35 }}
                     className='fixed bottom-0 w-full flex flex-col items-center justify-center gap-2 z-100'
                 >
-                    <AnimatePresence >
-                        {
-                            canTap && <motion.button
-                                initial={{ width: 0 }}
-                                animate={{ width: 100 }}
-                                exit={{ width: 0 }}
-                                className="px-[15px] rounded-full text-sm font-light min-w-[5em] h-[2em] text-black bg-gray-100 flex flex-row gap-2 items-center justify-center"
-                                whileTap={canTap ? { scale: 0.9 } : undefined}
-                            >
-                                <div className='rounded-full w-2 h-2' style={{ backgroundColor: COLORS[hintLevel] }} />
-                                Level {hintLevel + 1}
-                            </motion.button>
-                        }
-                    </AnimatePresence>
+
+
+                    <LevelSelect hintLevel={hintLevel} setHintLevel={setHintLevel} />
+
+
                     <motion.button
                         className="px-[15px] rounded-full font-semibold min-w-[5.5em] h-[3em] w-40 text-white bg-black flex justify-center items-center gap-2"
                         style={{ backgroundColor: canTap ? "black" : "grey" }}
