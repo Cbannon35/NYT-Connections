@@ -90,7 +90,7 @@ const Profile = () => {
 
                 <motion.button
                     className="px-[15px] rounded-full font-semibold min-w-[5.5em] h-[3em] w-40 text-white bg-black flex justify-center items-center gap-2 select-none"
-                    style={{ backgroundColor: 'red' }}
+                    style={{ backgroundColor: "FC716B" }}
                     whileTap={{ scale: 0.9 }}
                     onClick={() => setDeleteDrawerOpen(true)}
                 >
