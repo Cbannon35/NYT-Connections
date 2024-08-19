@@ -5,9 +5,10 @@ import Menu from './Menu'
 import { openDB, addItem, getItem } from '../utils/indexedDB.js';
 import { ClientGame } from '../utils/game.js';
 import Spinner from './Spinner.jsx';
+import { NavLink } from 'react-router-dom';
 
 const MAX_RETRIES = 5;
-const RETRY_DELAY = 1000; // 1 sec
+const RETRY_DELAY = 2000; // 2 sec
 
 const Game = () => {
 
@@ -29,6 +30,7 @@ const Game = () => {
             try {
                 const response = await fetch(url);
                 const data = await response.json();
+                console.log("data", data)
 
                 if (response.status === 429) {
                     throw new Error("Rate limited");
@@ -96,7 +98,10 @@ const Game = () => {
 
     if (error) {
         return (
-            <div className='mt-16'>There was an error getting this connections game</div>
+            <div className='mt-36 flex flex-col justify-center text-center'>
+                There was an error getting this connections game <br /> Please try again later
+                <NavLink to="/games" className="text-blue-500 underline">Back to games</NavLink>
+            </div>
         )
     }
 

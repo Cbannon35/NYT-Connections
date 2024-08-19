@@ -31,19 +31,19 @@ const ScrollCalendar = forwardRef((props, ref) => {
         maxDate: props.maxDate,
         selectedDate: selectedDate,
         handleSelect: handleSelectedDate,
-        className: `${props.className} w-full text-gray-700 mt-24 h-full`,
+        className: `${props.className} w-full text-gray-700 mt-24 h-screen`,
         yearFormat: props.yearFormat,
         monthFormat: props.monthFormat,
         enableYearTitle: props.enableYearTitle,
         enableMonthTitle: props.enableMonthTitle,
-        r: ref
+        ref: ref
     };
 
     return <RenderCalendarYear {...renderProps} />;
 });
 
-const RenderCalendarYear = (props) => {
-    const { minDate, maxDate, r } = props;
+const RenderCalendarYear = forwardRef((props, ref) => {
+    const { minDate, maxDate } = props;
     const totalMonth = Math.round(maxDate.diff(minDate, 'months', true)) + 1;
     let now = moment(minDate, 'DD/MMM/YYYY');
     const elements = [];
@@ -55,8 +55,8 @@ const RenderCalendarYear = (props) => {
         now = now.add(1, 'M');
     }
 
-    return <div ref={r} className={props.className}>{elements}</div>;
-};
+    return <div ref={ref} className={props.className}>{elements}</div>;
+});
 
 const RenderMonthCard = (props) => {
     const now = props.currentMonth;

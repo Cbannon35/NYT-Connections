@@ -34,21 +34,18 @@ const Word = ({ word, guessWord, selectedCount, selected }) => {
         textWidth = text.offsetWidth;
       }
       text.style.fontSize = `${newFontSize}px`;
-      console.log('Resized', newFontSize);
     }
-    // if word is 7 characters or more, resize font
-    if (word.length > 7) {
-      console.log("Adding resize event listener", word);
-      window.addEventListener('resize', resize);
-      resize();
-    }
+
+    // just add listener for every word for shuffle functionality vs if a worrd is leng 7
+    window.addEventListener('resize', resize);
+    resize();
 
     return () => {
       window.removeEventListener('resize', () => {
         console.log('Removed');
       })
     }
-  }, [])
+  }, [word])
 
 
   let canTap = selectedCount < 4 || selected;

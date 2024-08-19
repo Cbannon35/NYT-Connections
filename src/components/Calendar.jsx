@@ -1,8 +1,7 @@
 import React, { Component, useRef, useEffect } from 'react';
 import moment from 'moment';
 import ScrollCalendar from './ScrollCalender';
-
-const END_DATE = "2023-06-12";
+import { END_DATE } from '../utils/constants';
 
 const Calendar = () => {
     const contentRef = useRef(null);
@@ -11,6 +10,7 @@ const Calendar = () => {
     const scrollPositionKey = 'scrollPosition';
 
     useEffect(() => {
+        console.log(contentRef.current)
         // Ensure the div is mounted before interacting with it
         if (contentRef.current) {
             // Check if there is a saved scroll position
@@ -22,28 +22,27 @@ const Calendar = () => {
                 // Scroll to bottom if no position is saved
                 const lastElement = document.getElementById('last-element');
                 if (lastElement) {
-                    console.log("scrolling to last element")
+                    // console.log("scrolling to last element")
                     lastElement.scrollIntoView({ behavior: 'auto', block: 'end' });
                 }
             }
 
             // Save the scroll position when the user scrolls
-            const handleScroll = () => {
-                if (contentRef.current) {
-                    console.log("contentRef.current.scrollTop", contentRef.current.scrollTop)
-                    localStorage.setItem(
-                        scrollPositionKey,
-                        contentRef.current.scrollTop
-                    );
-                }
-            };
+            const handleScroll = (e) => {
+                // console.log("event", e)
+                localStorage.setItem(scrollPositionKey, e.target.scrollTop);
+            }
 
-            contentRef.current.addEventListener('scroll', handleScroll);
+            console.log("ADDING EVENT LISTENER")
+            // contentRef.current.addEventListener('scroll', handleScroll, true);
+            contentRef.current.addEventListener('scroll', handleScroll, true);
 
             // Cleanup event listener on unmount
             return () => {
+                console.log("REMOVING EVENT LISTENER")
                 if (contentRef.current) {
-                    contentRef.current.removeEventListener('scroll', handleScroll);
+                    // contentRef.current.removeEventListener('scroll', handleScroll, true);
+                    contentRef.current.removeEventListener('scroll', handleScroll, true);
                 }
             };
         }

@@ -82,12 +82,12 @@ const Header = () => {
 
                 : null}
 
-            <main>
+            <main onScroll={() => { console.log("main scroll") }}>
                 <Outlet />
             </main>
 
             {showBottomNavBar ? <NavBar /> : null}
-            <BottomSheet isVisible={hintSheet} title={"Hints"} onClose={() => setHintSheet(false)}>
+            {/* <BottomSheet isVisible={hintSheet} title={"Hints"} onClose={() => setHintSheet(false)}>
                 <Hints />
             </BottomSheet>
             <BottomSheet isVisible={helpSheet} title={"Help"} onClose={() => setHelpSheet(false)}>
@@ -95,7 +95,7 @@ const Header = () => {
             </BottomSheet>
             <BottomSheet isVisible={calHelpSheet} title={"Help"} onClose={() => setCalHelpSheet(false)}>
                 <CalendarHelp />
-            </BottomSheet>
+            </BottomSheet> */}
         </>
     );
 };
