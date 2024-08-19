@@ -51,7 +51,7 @@ const Calendar = () => {
                 minDate={moment(END_DATE, 'YYYY-MM-DD')}
                 selectedDate={moment('2019-01-23', 'YYYY-MM-DD')}
                 maxDate={moment(new Date(), 'YYYY-MM-DD')}
-                className='overflow-y-scroll pt-24 pb-16 h-screen no-scrollbar touch-auto z-100'
+                className='overflow-y-scroll pt-28 pb-16 h-screen no-scrollbar touch-auto z-100'
             />
             <div id='last-element'></div>
         </React.Fragment>

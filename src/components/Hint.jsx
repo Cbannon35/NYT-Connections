@@ -72,10 +72,10 @@ const Hints = () => {
     }
 
     return (
-        <>
+        <div className='absolute inset-0 flex flex-col'>
             {game.hints.length === 0 ?
-                <h1>Hints you generate will appear here!</h1> :
-                <div className="flex flex-col gap-4 items-center mt-4 mb-4 px-8 overflow-y-scroll no-scrollbar" onScroll={() => { console.log("bruh im scroll") }}>
+                <h1 className='flex flex-1 pt-8 justify-center'>Hints you generate will appear here!</h1> :
+                <div className="flex flex-col flex-1 gap-4 items-center mt-4 mb-4 px-8 overflow-y-scroll no-scrollbar" onScroll={() => { console.log("bruh im scroll") }}>
                     {game.hints.map((hint, index) => (
                         <motion.div
                             initial={{ width: 0 }}
@@ -93,30 +93,30 @@ const Hints = () => {
                 animate={{ y: 0 }}
                 exit={{ y: "100%" }}
                 transition={{ type: "spring", stiffness: 650, damping: 35 }}
-                className='sticky bottom-0 w-full flex flex-col py-6 border-black border-t-[1px] items-center justify-center gap-2 z-[999999999] bg-white'
+                className='sticky bottom-0 w-full py-6 border-black border-t-[1px] z-[999999999] bg-white'
             >
+                <div className='relative flex flex-col items-center justify-center gap-2 pb-4 pt-8'>
+                    <LevelSelect generating={!canTap} hintLevel={hintLevel} setHintLevel={setHintLevel} />
 
 
-                <LevelSelect generating={!canTap} hintLevel={hintLevel} setHintLevel={setHintLevel} />
-
-
-                <motion.button
-                    className="px-[15px] rounded-full font-semibold min-w-[5.5em] h-[3em] w-40 text-white bg-black flex justify-center items-center gap-2 select-none"
-                    style={{ backgroundColor: canTap ? "black" : "grey" }}
-                    whileTap={canTap ? { scale: 0.9 } : undefined}
-                    disabled={!canTap}
-                    onClick={getHint}
-                >
-                    {canTap ?
-                        <>Generate < svg width="18px" height="18px" viewBox="0 0 24 24" strokeWidth="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#FFFFFF" aria-hidden="true"><path d="M3 21L13 11M18 6L15.5 8.5" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path><path d="M9.5 2L10.4453 4.55468L13 5.5L10.4453 6.44532L9.5 9L8.55468 6.44532L6 5.5L8.55468 4.55468L9.5 2Z" stroke="#FFFFFF" strokeWidth="1.5" strokeLinejoin="round"></path><path d="M19 10L19.5402 11.4598L21 12L19.5402 12.5402L19 14L18.4598 12.5402L17 12L18.4598 11.4598L19 10Z" stroke="#FFFFFF" strokeWidth="1.5" strokeLinejoin="round"></path></svg></>
-                        :
-                        <>Generating
-                            <Spinner />
-                        </>
-                    }
-                </motion.button>
-            </motion.menu>
-        </>
+                    <motion.button
+                        className="px-[15px] rounded-full font-semibold min-w-[5.5em] h-[3em] w-40 text-white bg-black flex justify-center items-center gap-2 select-none"
+                        style={{ backgroundColor: canTap ? "black" : "grey" }}
+                        whileTap={canTap ? { scale: 0.9 } : undefined}
+                        disabled={!canTap}
+                        onClick={getHint}
+                    >
+                        {canTap ?
+                            <>Generate < svg width="18px" height="18px" viewBox="0 0 24 24" strokeWidth="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#FFFFFF" aria-hidden="true"><path d="M3 21L13 11M18 6L15.5 8.5" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path><path d="M9.5 2L10.4453 4.55468L13 5.5L10.4453 6.44532L9.5 9L8.55468 6.44532L6 5.5L8.55468 4.55468L9.5 2Z" stroke="#FFFFFF" strokeWidth="1.5" strokeLinejoin="round"></path><path d="M19 10L19.5402 11.4598L21 12L19.5402 12.5402L19 14L18.4598 12.5402L17 12L18.4598 11.4598L19 10Z" stroke="#FFFFFF" strokeWidth="1.5" strokeLinejoin="round"></path></svg></>
+                            :
+                            <>Generating
+                                <Spinner />
+                            </>
+                        }
+                    </motion.button>
+                </div>
+            </motion.menu >
+        </div>
     );
 };
 

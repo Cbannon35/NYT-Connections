@@ -44,7 +44,7 @@ const Header = () => {
         <>
             {showHeader ?
 
-                <header className='fixed w-full top-0 bg-white border-b-black border-[1px] pt-6 px-2'>
+                <header className='fixed w-full top-0 bg-white border-b-black border-[1px] pt-6 px-2 z-50'>
 
                     {date !== undefined ?
                         <div className='flex flex-row justify-between md:justify-around items-center'>
