@@ -1,4 +1,4 @@
-import React, { Component, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import moment from 'moment';
 import ScrollCalendar from './ScrollCalender';
 import { END_DATE } from '../utils/constants';
@@ -32,14 +32,11 @@ const Calendar = () => {
                 // console.log("event", e)
                 localStorage.setItem(scrollPositionKey, e.target.scrollTop);
             }
-
-            console.log("ADDING EVENT LISTENER")
             // contentRef.current.addEventListener('scroll', handleScroll, true);
             contentRef.current.addEventListener('scroll', handleScroll, true);
 
             // Cleanup event listener on unmount
             return () => {
-                console.log("REMOVING EVENT LISTENER")
                 if (contentRef.current) {
                     // contentRef.current.removeEventListener('scroll', handleScroll, true);
                     contentRef.current.removeEventListener('scroll', handleScroll, true);
