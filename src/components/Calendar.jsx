@@ -10,7 +10,6 @@ const Calendar = () => {
     const scrollPositionKey = 'scrollPosition';
 
     useEffect(() => {
-        console.log(contentRef.current)
         // Ensure the div is mounted before interacting with it
         if (contentRef.current) {
             // Check if there is a saved scroll position
@@ -52,7 +51,7 @@ const Calendar = () => {
                 minDate={moment(END_DATE, 'YYYY-MM-DD')}
                 selectedDate={moment('2019-01-23', 'YYYY-MM-DD')}
                 maxDate={moment(new Date(), 'YYYY-MM-DD')}
-                className='overflow-y-scroll mb-16'
+                className='overflow-y-scroll pt-24 pb-16 h-screen no-scrollbar touch-auto'
             />
             <div id='last-element'></div>
         </React.Fragment>

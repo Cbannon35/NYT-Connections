@@ -31,7 +31,7 @@ const ScrollCalendar = forwardRef((props, ref) => {
         maxDate: props.maxDate,
         selectedDate: selectedDate,
         handleSelect: handleSelectedDate,
-        className: `${props.className} w-full text-gray-700 mt-24 h-screen`,
+        className: `${props.className} w-full text-gray-700`,
         yearFormat: props.yearFormat,
         monthFormat: props.monthFormat,
         enableYearTitle: props.enableYearTitle,
