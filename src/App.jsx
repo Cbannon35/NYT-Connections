@@ -4,6 +4,7 @@ import Game from './components/Game'
 import SplashScreen from './components/SplashScreen';
 import Profile from './components/Profile';
 import Calendar from './components/Calendar';
+import { Analytics } from "@vercel/analytics/react"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -20,6 +21,7 @@ function App() {
   return (
     <>
       <RouterProvider router={router} />
+      <Analytics />
     </>
   )
 }
