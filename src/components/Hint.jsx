@@ -76,7 +76,7 @@ const Hints = () => {
         <div className='absolute inset-0 flex flex-col'>
             {game.hints.length === 0 ?
                 <h1 className='flex flex-1 pt-8 justify-center'>Hints you generate will appear here!</h1> :
-                <div className="flex flex-col flex-1 gap-4 items-center mt-4 mb-4 px-8 overflow-y-scroll no-scrollbar" onScroll={() => { console.log("bruh im scroll") }}>
+                <div className="flex flex-col flex-1 gap-4 items-center mt-4 mb-4 px-8 overflow-y-scroll no-scrollbar">
                     {game.hints.map((hint, index) => (
                         <motion.div
                             initial={{ width: 0 }}
@@ -103,7 +103,7 @@ const Hints = () => {
                     <motion.button
                         className="px-[15px] rounded-full font-semibold min-w-[5.5em] h-[3em] w-40 text-white bg-black flex justify-center items-center gap-2 select-none"
                         style={{ backgroundColor: error ? '#fc716b' : canTap ? "black" : "grey" }}
-                        whileTap={canTap ? { scale: 0.9 } : undefined}
+                        whileTap={canTap && !error ? { scale: 0.9 } : undefined}
                         disabled={!canTap || error}
                         onClick={getHint}
                         animate={{ width: "auto" }}

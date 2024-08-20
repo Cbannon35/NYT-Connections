@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import { getItem } from '../utils/indexedDB';
 
+
 const bgColor = '#EFEFE6';
 const textColor = '#000000';
 
@@ -44,9 +45,6 @@ const ScrollCalendar = forwardRef((props, ref) => {
 });
 
 const RenderCalendarYear = forwardRef((props, ref) => {
-    const [startY, setStartY] = useState(0);
-    const [scrollTop, setScrollTop] = useState(0);
-
     const { minDate, maxDate } = props;
     const totalMonth = Math.round(maxDate.diff(minDate, 'months', true)) + 1;
     let now = moment(minDate, 'DD/MMM/YYYY');
@@ -59,8 +57,12 @@ const RenderCalendarYear = forwardRef((props, ref) => {
         now = now.add(1, 'M');
     }
 
-    return <div ref={ref}
-        className={props.className}>{elements}</div>;
+    return (
+        <div ref={ref}
+            className={props.className}>
+            {elements}
+        </div>
+    );
 });
 
 const RenderMonthCard = (props) => {
