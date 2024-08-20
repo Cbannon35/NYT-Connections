@@ -76,4 +76,8 @@ export class ClientGame {
         this.currentGuess = [];
         this.mistakes = 0;
     }
+
+    shuffle() {
+        this.words = this.words.sort(() => Math.random() - 0.5);
+    }
 }
