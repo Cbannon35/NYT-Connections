@@ -1,8 +1,17 @@
-# React + Vite
+# Connections PWA
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[Live App](https://connections-lyart.vercel.app/)
 
-Currently, two official plugins are available:
+Hi, welcome to the Connections PWA repository. This is a Progressive Web App recreation (dare i say improvement?!) of the NYT Connections game. 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This project is a work in progress, but right now everything is functional. Progress is stored in indexedDB, so you can close the app and come back to it later.
+
+The code is a little rough... don't say I didn't warn you! I'm working on cleaning it up, but I'm also working on adding more features.
+
+View the api [here](https://github.com/Cbannon35/NYT-Connections-API/blob/main/README.md)
+
+## Loose TODO list:
+- [ ] Add animations on guess submit
+- [ ] Add user accounts w/ authentication -> connect to MongoDB
+- [ ] Add ability to create custom games
+- [ ] Add 'Lab' to train AI agents for solving / creating games
