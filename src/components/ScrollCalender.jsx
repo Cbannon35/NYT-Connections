@@ -44,6 +44,9 @@ const ScrollCalendar = forwardRef((props, ref) => {
 });
 
 const RenderCalendarYear = forwardRef((props, ref) => {
+    const [startY, setStartY] = useState(0);
+    const [scrollTop, setScrollTop] = useState(0);
+
     const { minDate, maxDate } = props;
     const totalMonth = Math.round(maxDate.diff(minDate, 'months', true)) + 1;
     let now = moment(minDate, 'DD/MMM/YYYY');
@@ -56,7 +59,8 @@ const RenderCalendarYear = forwardRef((props, ref) => {
         now = now.add(1, 'M');
     }
 
-    return <div ref={ref} className={props.className}>{elements}</div>;
+    return <div ref={ref}
+        className={props.className}>{elements}</div>;
 });
 
 const RenderMonthCard = (props) => {
@@ -101,8 +105,8 @@ const RenderMonthHeader = (props) => {
     return (
         <p className="w-full flex flex-row-reverse justify-end items-center gap-2 font-bold text-lg leading-6 tracking-tight mb-4">
             <span className='flex justify-end flex-1 px-6 gap-4'>
-                <span className='w-[60%] bg-gray-100 rounded-full relative overflow-hidden'>
-                    <span className='rounded-full bg-gray-500 z-2 h-full absolute top-0 left-0' style={{ width: `${(gamesSolved / days) * 100}%` }}></span>
+                <span className='w-[60%] bg-gray-100 rounded-full relative'>
+                    <span className='rounded-full bg-gray-500 z-2 h-full top-0 left-0' style={{ width: `${(gamesSolved / days) * 100}%` }}></span>
                 </span>
                 {gamesSolved}/{days}
             </span>

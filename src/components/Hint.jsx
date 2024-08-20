@@ -15,13 +15,7 @@ const Hints = () => {
     const [hintLevel, setHintLevel] = useState(0);
     const [canTap, setCanTap] = useState(true);
     const [open, setOpen] = useState(false);
-    const toggleDropdown = () => setOpen(!open);
-    const filteredLevels = [...Array(4).keys()].filter(level => level !== hintLevel);
-
-    const handleOptionClick = (value) => {
-        setHintLevel(value);
-        setOpen(false);
-    };
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         getItem(date).then((result) => {
@@ -48,6 +42,13 @@ const Hints = () => {
                 body: JSON.stringify({ level: hintLevel, prev_hints: prevGuesses }),
             })
             if (!response.ok) {
+                if (response.status === 400) {
+                    setError("Max hints reached for level");
+                    setTimeout(() => setError(false), 2000);
+                } else if (response.status === 429) {
+                    setError("Requested too fast");
+                    setTimeout(() => setError(false), 2000);
+                }
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const data = await response.json();
@@ -81,7 +82,7 @@ const Hints = () => {
                             initial={{ width: 0 }}
                             animate={{ width: "100%" }}
                             key={index}
-                            className='flex flex-row gap-4 items-center w-full h-24 md:text-[20px] text-[16px] font-bold rounded-[2rem] text-center px-4'
+                            className='flex flex-row gap-4 items-center w-full min-h-24 md:text-[20px] text-[16px] font-bold rounded-[2rem] text-center px-4'
                             style={{ backgroundColor: COLORS[hint.level] }}>
                             {hint.hint}
                         </motion.div>
@@ -101,17 +102,19 @@ const Hints = () => {
 
                     <motion.button
                         className="px-[15px] rounded-full font-semibold min-w-[5.5em] h-[3em] w-40 text-white bg-black flex justify-center items-center gap-2 select-none"
-                        style={{ backgroundColor: canTap ? "black" : "grey" }}
+                        style={{ backgroundColor: error ? '#fc716b' : canTap ? "black" : "grey" }}
                         whileTap={canTap ? { scale: 0.9 } : undefined}
-                        disabled={!canTap}
+                        disabled={!canTap || error}
                         onClick={getHint}
+                        animate={{ width: "auto" }}
                     >
-                        {canTap ?
-                            <>Generate < svg width="18px" height="18px" viewBox="0 0 24 24" strokeWidth="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#FFFFFF" aria-hidden="true"><path d="M3 21L13 11M18 6L15.5 8.5" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path><path d="M9.5 2L10.4453 4.55468L13 5.5L10.4453 6.44532L9.5 9L8.55468 6.44532L6 5.5L8.55468 4.55468L9.5 2Z" stroke="#FFFFFF" strokeWidth="1.5" strokeLinejoin="round"></path><path d="M19 10L19.5402 11.4598L21 12L19.5402 12.5402L19 14L18.4598 12.5402L17 12L18.4598 11.4598L19 10Z" stroke="#FFFFFF" strokeWidth="1.5" strokeLinejoin="round"></path></svg></>
-                            :
-                            <>Generating
-                                <Spinner />
-                            </>
+                        {error ? error :
+                            canTap ?
+                                <>Generate < svg width="18px" height="18px" viewBox="0 0 24 24" strokeWidth="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#FFFFFF" aria-hidden="true"><path d="M3 21L13 11M18 6L15.5 8.5" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path><path d="M9.5 2L10.4453 4.55468L13 5.5L10.4453 6.44532L9.5 9L8.55468 6.44532L6 5.5L8.55468 4.55468L9.5 2Z" stroke="#FFFFFF" strokeWidth="1.5" strokeLinejoin="round"></path><path d="M19 10L19.5402 11.4598L21 12L19.5402 12.5402L19 14L18.4598 12.5402L17 12L18.4598 11.4598L19 10Z" stroke="#FFFFFF" strokeWidth="1.5" strokeLinejoin="round"></path></svg></>
+                                :
+                                <>Generating
+                                    <Spinner />
+                                </>
                         }
                     </motion.button>
                 </div>

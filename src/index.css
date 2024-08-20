@@ -33,7 +33,13 @@
 
 .body {
   position: relative;
+  touch-action: auto;
 }
+
+.scrollable-element {
+    -webkit-overflow-scrolling: touch;
+}
+
 
 /* Tooltip container */
 .tooltip {

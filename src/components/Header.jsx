@@ -40,6 +40,13 @@ const Header = () => {
     const [helpSheet, setHelpSheet] = useState(false);
     const [calHelpSheet, setCalHelpSheet] = useState(false);
 
+    useEffect(() => {
+        const preventDefault = (e) => e.preventDefault();
+        document.body.addEventListener('touchmove', preventDefault, { passive: false });
+        return () => document.body.removeEventListener('touchmove', preventDefault);
+    }, []);
+
+
     return (
         <>
             {showHeader ?
@@ -84,7 +91,7 @@ const Header = () => {
 
                 : null}
 
-            <main className='touch-pan-y'>
+            <main className=''>
                 <Outlet />
             </main>
 

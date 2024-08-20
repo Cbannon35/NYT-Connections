@@ -73,7 +73,7 @@ const LevelSelect = ({ generating, hintLevel, setHintLevel }) => {
             <div className="fixed bottom-0 left-1/2 -translate-x-1/2 -translate-y-24">
                 <motion.div
                     onClick={() => setOpen(!open)}
-                    className="rounded-3xl text-black bg-gray-100 overflow-hidden"
+                    className="rounded-3xl text-black bg-gray-100"
                     initial={false}
                     animate={open ? 'open' : 'closed'}
                     variants={dropdownVariants}
