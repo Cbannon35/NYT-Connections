@@ -17,31 +17,27 @@ const Calendar = () => {
     useEffect(() => {
         // Ensure the div is mounted before interacting with it
         if (contentRef.current) {
-            console.log("contentRef", contentRef)
             // Check if there is a saved scroll position
             const savedScrollPosition = localStorage.getItem(scrollPositionKey);
-            console.log("savedScrollPosition", savedScrollPosition)
             if (savedScrollPosition) {
                 contentRef.current.scrollTop = parseInt(savedScrollPosition, 10);
             } else {
                 // Scroll to bottom if no position is saved
                 const lastElement = document.getElementById('last-element');
                 if (lastElement) {
-                    console.log("scrolling to last element")
                     lastElement.scrollIntoView({ behavior: 'auto', block: 'end' });
                 }
             }
 
             // Save the scroll position when the user scrolls
             const handleScroll = (e) => {
-                console.log("event", e)
+                // console.log("event", e)
                 localStorage.setItem(scrollPositionKey, e.target.scrollTop);
             }
             const handleTouchMove = (e) => {
-                console.log("event", e)
-                e.preventPropagation();
+                // console.log("event", e)
+                e.stopPropagation();
                 localStorage.setItem(scrollPositionKey, e.target.scrollTop);
-                // TODO:
             }
             // contentRef.current.addEventListener('scroll', handleScroll, true);
             contentRef.current.addEventListener('scroll', handleScroll, true);

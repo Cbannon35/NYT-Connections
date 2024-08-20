@@ -1,12 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 
-const Word = ({ word, guessWord, selectedCount, selected }) => {
+const Word = ({ word, guessWord, selectedCount, selected, isAnimating, animationType }) => {
   const bgColor = selected ? '#5A594E' : '#EFEFE6';
   const textColor = selected ? '#FFFFFF' : '#000000';
 
   const boxRef = useRef(null);
   const textRef = useRef(null);
+
+  const animations = {
+    none: {},
+    correct: {
+      y: [0, -10, 10, -10, 10, 0],
+    },
+    incorrect: {
+      x: [-10, 10, -10, 10, -10, 0],
+    },
+  };
 
   useEffect(() => {
     function resize() {
@@ -42,7 +52,6 @@ const Word = ({ word, guessWord, selectedCount, selected }) => {
 
     return () => {
       window.removeEventListener('resize', () => {
-        console.log('Removed');
       })
     }
   }, [word])
@@ -53,7 +62,8 @@ const Word = ({ word, guessWord, selectedCount, selected }) => {
     <motion.div
       initial={{ backgroundColor: bgColor, color: textColor }}
       whileTap={canTap ? { scale: 0.9 } : undefined}
-      animate={{ backgroundColor: bgColor, color: textColor }}
+      // animate={{ backgroundColor: bgColor, color: textColor }}
+      animate={isAnimating ? animations[animationType] : { backgroundColor: bgColor, color: textColor }}
       className={`rounded-md select-none text-center content-center overflow-hidden whitespace-nowrap`}
       style={{ cursor: canTap ? "pointer" : "" }}
       onTapStart={() => {

@@ -1,16 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import ReactDOM from 'react-dom'
 import Results from './Results';
 import BottomSheet from './BottomSheet';
 
 import { addItem } from '../utils/indexedDB';
-
-const Portal = ({ children }) => {
-    return ReactDOM.createPortal(
-        children,
-        document.body
-    );
-};
 
 function arraysEqual(a, b) {
     if (a === b) return true;
@@ -26,7 +18,7 @@ function arraysEqual(a, b) {
     return true;
 }
 
-const Menu = ({ game, setGame }) => {
+const Menu = ({ game, setGame, guessing }) => {
 
     const [showResults, setShowResults] = useState(false);
     const deslectDisable = game.currentGuess.length == 0
@@ -113,11 +105,12 @@ const Menu = ({ game, setGame }) => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const data = await response.json();
-            console.log(data);
+            // console.log(data);
             const guess_level = data.data.level;
             game.guesses.push(guess);
             if (guess_level == -1) {
                 console.log("Incorrect guess");
+                guessing(false);
                 setGame(prevGame => ({
                     ...prevGame,
                     mistakes: prevGame.mistakes + 1,
@@ -130,6 +123,7 @@ const Menu = ({ game, setGame }) => {
                 });
             } else {
                 console.log("Correct guess: ", guess_level);
+                guessing(true);
                 setGame(prevGame => ({
                     ...prevGame,
                     categories: [...prevGame.categories, {

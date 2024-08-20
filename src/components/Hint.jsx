@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -16,6 +16,7 @@ const Hints = () => {
     const [canTap, setCanTap] = useState(true);
     const [open, setOpen] = useState(false);
     const [error, setError] = useState(null);
+    const lastHintRef = useRef(null);
 
     useEffect(() => {
         getItem(date).then((result) => {
@@ -26,10 +27,17 @@ const Hints = () => {
         });
     }, []);
 
+    useEffect(() => {
+        // Scroll to the last hint whenever game.hints changes
+        if (lastHintRef.current) {
+            lastHintRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [game?.hints]);
+
     async function getHint() {
         setCanTap(false);
 
-        // await new Promise(resolve => setTimeout(resolve, 5000));
+        await new Promise(resolve => setTimeout(resolve, 5000));
 
         const url = `${import.meta.env.VITE_FAST_API_ENDPOINT}/${date}/hint`;
         const prevGuesses = game.hints.filter(hint => hint.level == hintLevel).length;
@@ -79,11 +87,13 @@ const Hints = () => {
                 <div className="flex flex-col flex-1 gap-4 items-center mt-4 mb-4 px-8 overflow-y-scroll no-scrollbar">
                     {game.hints.map((hint, index) => (
                         <motion.div
-                            initial={{ width: 0 }}
+                            initial={{ width: "100px" }}
                             animate={{ width: "100%" }}
                             key={index}
-                            className='flex flex-row gap-4 items-center w-full min-h-24 md:text-[20px] text-[16px] font-bold rounded-[2rem] text-center px-4'
-                            style={{ backgroundColor: COLORS[hint.level] }}>
+                            className='flex flex-row gap-4 items-center w-full min-h-24 md:text-[20px] text-[16px] font-bold rounded-[2rem] text-center px-4 min-w-[100px]'
+                            style={{ backgroundColor: COLORS[hint.level] }}
+                            ref={index === game.hints.length - 1 ? lastHintRef : null}
+                        >
                             {hint.hint}
                         </motion.div>
                     ))}
@@ -106,6 +116,7 @@ const Hints = () => {
                         whileTap={canTap && !error ? { scale: 0.9 } : undefined}
                         disabled={!canTap || error}
                         onClick={getHint}
+                        initial={false}
                         animate={{ width: "auto" }}
                     >
                         {error ? error :
@@ -113,7 +124,7 @@ const Hints = () => {
                                 <>Generate < svg width="18px" height="18px" viewBox="0 0 24 24" strokeWidth="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#FFFFFF" aria-hidden="true"><path d="M3 21L13 11M18 6L15.5 8.5" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path><path d="M9.5 2L10.4453 4.55468L13 5.5L10.4453 6.44532L9.5 9L8.55468 6.44532L6 5.5L8.55468 4.55468L9.5 2Z" stroke="#FFFFFF" strokeWidth="1.5" strokeLinejoin="round"></path><path d="M19 10L19.5402 11.4598L21 12L19.5402 12.5402L19 14L18.4598 12.5402L17 12L18.4598 11.4598L19 10Z" stroke="#FFFFFF" strokeWidth="1.5" strokeLinejoin="round"></path></svg></>
                                 :
                                 <>Generating
-                                    <Spinner />
+                                    <Spinner color="white" width="8px" height="8px" />
                                 </>
                         }
                     </motion.button>

@@ -12,7 +12,7 @@ import { addItem } from '../utils/indexedDB';
  * @param {React.Dispatch<React.SetStateAction<ClientGame>>} setGame
  * @returns 
  */
-const Board = ({ game, setGame }) => {
+const Board = ({ game, setGame, isAnimating, correctGuess }) => {
 
     function guessWord(word) {
         if (game.currentGuess.includes(word)) {
@@ -59,7 +59,7 @@ const Board = ({ game, setGame }) => {
                 </section>
             ))}
             {game.words.map((word, index) => (
-                <Word key={index} word={word} guessWord={guessWord} selectedCount={game.currentGuess.length} selected={game.currentGuess.includes(word)} />
+                <Word key={index} word={word} guessWord={guessWord} selectedCount={game.currentGuess.length} selected={game.currentGuess.includes(word)} isAnimating={isAnimating} correctGuess={correctGuess} />
             ))}
         </section>
     )
