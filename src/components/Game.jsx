@@ -103,7 +103,7 @@ const Game = () => {
 
             if (data) {
                 const fetchedGame = new ClientGame(date, data.data);
-                fetchGame.shuffle();
+                fetchedGame.shuffle();
                 setGame(fetchedGame);
                 await addItem(date, fetchedGame);
                 setLoaded(true);
