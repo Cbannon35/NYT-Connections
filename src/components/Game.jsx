@@ -20,6 +20,10 @@ const Game = () => {
     const [correctGuess, setCorrectGuess] = useState(0);
     const [isAnimating, setIsAnimating] = useState(false);
 
+    function shuffleGame(game) {
+        game.shuffle();
+    }
+
     function guess(isCorrect) {
         setCorrectGuess((prev) => {
             if (isCorrect) {
@@ -103,7 +107,7 @@ const Game = () => {
 
             if (data) {
                 const fetchedGame = new ClientGame(date, data.data);
-                fetchedGame.shuffle();
+                shuffleGame(fetchedGame);
                 setGame(fetchedGame);
                 await addItem(date, fetchedGame);
                 setLoaded(true);
