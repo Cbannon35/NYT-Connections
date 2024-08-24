@@ -37,8 +37,6 @@ const Hints = () => {
     async function getHint() {
         setCanTap(false);
 
-        await new Promise(resolve => setTimeout(resolve, 5000));
-
         const url = `${import.meta.env.VITE_FAST_API_ENDPOINT}/${date}/hint`;
         const prevGuesses = game.hints.filter(hint => hint.level == hintLevel).length;
         try {
