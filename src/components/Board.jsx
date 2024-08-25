@@ -8,12 +8,6 @@ import { addItem } from '../utils/indexedDB';
 import { motion } from 'framer-motion'
 import { useGameStore } from '../utils/gameStore';
 
-/**
- * The Board component
- * @param {ClientGame} game
- * @param {React.Dispatch<React.SetStateAction<ClientGame>>} setGame
- * @returns 
- */
 const Board = () => {
     const game = useGameStore((state) => state.game);
     const guessWord = useGameStore((state) => state.guessWord);

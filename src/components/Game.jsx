@@ -22,10 +22,11 @@ const Game = () => {
     const game = useGameStore((state) => state.game);
     const loaded = useGameStore((state) => state.loaded);
     const error = useGameStore((state) => state.error);
-    const setGame = useGameStore((state) => state.setGame);
+    const setGame = useGameStore((state) => state.setNewGame);
     const setLoaded = useGameStore((state) => state.setLoaded);
     const setError = useGameStore((state) => state.setError);
     const shuffleGame = useGameStore((state) => state.shuffleGame);
+    const loadGame = useGameStore((state) => state.loadGame);
 
 
     /* TODO: Fetch the game data from NYT */
@@ -39,15 +40,12 @@ const Game = () => {
                 const data = await response.json();
                 // console.log("data", data)
 
-                if (response.status === 429) {
+                if (data.code === 429) {
                     throw new Error("Rate limited");
                 }
 
-                if (data.error) {
-                    console.error("Error fetching game data: ", data.error);
-                    // setError(true);
-                    setLoaded(true);
-                    return null;
+                if (data.code !== 200) {
+                    throw new Error("Error fetching game data");
                 }
 
                 return data;
@@ -57,40 +55,29 @@ const Game = () => {
                     await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
                     return fetchWithRetry(url, retries - 1);
                 } else {
-                    // console.error("Error fetching game data: ", error);
-                    setError(true);
-                    setLoaded(true);
                     return null;
                 }
             }
         }
 
         async function fetchGame() {
-            try {
-                // Attempt to read from IndexedDB
-                const savedGame = await getItem(date);
-                if (savedGame) {
-                    // console.log("Found game in IndexedDB", savedGame);
-                    setGame(savedGame.game);
-                    setLoaded(true);
-                    return;
-                } else {
-                    // console.log('Did not find game object in DB.');
-                }
-            } catch (error) {
-                // console.log('Error reading game object from DB:', error);
+            let foundGame = await loadGame(date);
+            if (foundGame) {
+                console.log("Game already exists in indexedDB");
+                setLoaded(true);
+                return;
             }
 
             const data = await fetchWithRetry(URL, MAX_RETRIES);
-
-            if (data) {
-                const fetchedGame = new ClientGame(date, data.data);
-                shuffleGame(fetchedGame);
-                setGame(fetchedGame);
+            if (data === null) {
+                console.error("Error fetching game data: ", error);
+                setError(true);
                 setLoaded(true);
+            } else {
+                const fetchedGame = new ClientGame(date, data.data);
+                setGame(fetchedGame);
             }
         }
-
         fetchGame();
 
     }, [date]);

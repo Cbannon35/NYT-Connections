@@ -10,8 +10,19 @@ export const useGameStore = create((set) => ({
 
     setGame: async (game) => {
         await addItem(game.id, game);
-        set({ game });
+        set({ game: game });
     },
+
+    setNewGame: async (game) => {
+        const shuffledWords = [...game.words].sort(() => Math.random() - 0.5);
+        const newGame = {
+            ...game,
+            words: shuffledWords,
+        };
+        await addItem(newGame.id, newGame);
+        set({ game: newGame, loaded: true, error: false });
+    },
+
 
     updateHints: async (newHint) => {
         set((state) => {
@@ -23,10 +34,12 @@ export const useGameStore = create((set) => ({
 
     loadGame: async (date) => {
         const savedGame = await getItem(date);
-        if (savedGame) {
-            set({ game: savedGame.game, loaded: true });
+        if (savedGame !== undefined) {
+            set({ game: savedGame.game, loaded: true, error: false });
+            return true;
         } else {
-            set({ loaded: true, error: 'Game not found' });
+            set({ error: 'Game not found' });
+            return false;
         }
     },
 
@@ -75,7 +88,7 @@ export const useGameStore = create((set) => ({
 
     correctGuess: async (guess, data) => {
         set((state) => {
-            console.log("got data", data);
+            // console.log("got data", data);
             state.game.guesses.push(guess);
             const newGame = { ...state.game, categories: [...state.game.categories, { level: data.level, group: data.group, words: guess }], currentGuess: [], words: [...state.game.words.filter(word => !state.game.currentGuess.includes(word))], solved: state.game.categories.length >= 3 };
             addItem(newGame.id, newGame);

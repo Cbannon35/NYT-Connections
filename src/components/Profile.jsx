@@ -103,8 +103,8 @@ const Profile = () => {
             <BottomSheet title="Delete Stats" isVisible={deleteDrawerOpen} onClose={() => setDeleteDrawerOpen(false)}>
                 <div className="flex flex-col gap-4 items-center">
                     <h1 className="text-3xl font-extralight">Are you sure?</h1>
-                    <button onClick={() => clearItems()}>Yes</button>
-                    <button onClick={() => setDeleteDrawerOpen(false)}>No</button>
+                    <button className="px-[15py] rounded-full font-semibold min-w-[7.5em] h-[3em] w-fit" style={{ border: "1px solid black", color: "black" }} onClick={() => { clearItems(); setDeleteDrawerOpen(false); }}>Yes</button>
+                    <button className="px-[15py] rounded-full font-semibold min-w-[7.5em] h-[3em] w-fit" style={{ border: "1px solid black", color: "black" }} onClick={() => setDeleteDrawerOpen(false)}>No</button>
                 </div>
             </BottomSheet>
         </>
