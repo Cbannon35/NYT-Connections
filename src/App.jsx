@@ -5,6 +5,7 @@ import SplashScreen from './components/SplashScreen';
 import Profile from './components/Profile';
 import Calendar from './components/Calendar';
 import { Analytics } from "@vercel/analytics/react"
+import Test from './components/Test';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -12,6 +13,7 @@ const router = createBrowserRouter(
       <Route index element={<SplashScreen />} />
       <Route path="profile" element={<Profile />} />
       <Route path="games" element={<Calendar />} />
+      <Route path="test" element={<Test />} />
       <Route path=":date" element={<Game />} />
     </Route>
   )

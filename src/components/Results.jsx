@@ -1,10 +1,12 @@
 import { COLORS } from "../utils/game";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { useGameStore } from "../utils/gameStore";
 
 const emojis = ["🟨", "🟩", "🟦", "🟪"]
 
-const Results = ({ game }) => {
+const Results = () => {
+    const game = useGameStore((state) => state.game);
     const [copySuccess, setCopySuccess] = useState(false);
     const results = game.results
 

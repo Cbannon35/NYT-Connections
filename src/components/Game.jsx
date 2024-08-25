@@ -7,6 +7,7 @@ import { ClientGame } from '../utils/game.js';
 import Spinner from './Spinner.jsx';
 import { NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useGameStore } from '../utils/gameStore.js';
 
 const MAX_RETRIES = 5;
 const RETRY_DELAY = 2000; // 2 sec
@@ -14,41 +15,18 @@ const RETRY_DELAY = 2000; // 2 sec
 const Game = () => {
 
     const date = useParams().date;
-    const [loaded, setLoaded] = useState(false);
-    const [error, setError] = useState(false);
-
-    const [correctGuess, setCorrectGuess] = useState(0);
-    const [isAnimating, setIsAnimating] = useState(false);
-
-    function shuffleGame(game) {
-        game.shuffle();
-    }
-
-    function guess(isCorrect) {
-        setCorrectGuess((prev) => {
-            if (isCorrect) {
-                console.log(prev + 1)
-                return prev + 1;
-            } else {
-                if (prev > 0) {
-                    console.log(0)
-                    return 0
-                } else {
-                    console.log(prev - 1)
-                    return prev - 1;
-                }
-            }
-        })
-        setIsAnimating(true);
-        setTimeout(() => {
-            setIsAnimating(false);
-        }, 500);
-    }
     /**
      * State hook for managing the game
      * @type {[ClientGame, function: React.Dispatch<ClientGame>]}
      */
-    const [game, setGame] = useState(new ClientGame(date, []));
+    const game = useGameStore((state) => state.game);
+    const loaded = useGameStore((state) => state.loaded);
+    const error = useGameStore((state) => state.error);
+    const setGame = useGameStore((state) => state.setGame);
+    const setLoaded = useGameStore((state) => state.setLoaded);
+    const setError = useGameStore((state) => state.setError);
+    const shuffleGame = useGameStore((state) => state.shuffleGame);
+
 
     /* TODO: Fetch the game data from NYT */
     useEffect(() => {
@@ -67,7 +45,7 @@ const Game = () => {
 
                 if (data.error) {
                     console.error("Error fetching game data: ", data.error);
-                    setError(true);
+                    // setError(true);
                     setLoaded(true);
                     return null;
                 }
@@ -109,7 +87,6 @@ const Game = () => {
                 const fetchedGame = new ClientGame(date, data.data);
                 shuffleGame(fetchedGame);
                 setGame(fetchedGame);
-                await addItem(date, fetchedGame);
                 setLoaded(true);
             }
         }
@@ -138,7 +115,7 @@ const Game = () => {
     return (
         <div className='flex flex-col gap-[18px] mt-16'>
             <div className='text-center pt-4'>Create four groups of four!</div>
-            <Board game={game} setGame={setGame} correctGuess={correctGuess} isAnimating={isAnimating} />
+            <Board game={game} setGame={setGame} />
             <section>
                 <div className='flex justify-center'>
                     <p className='flex flex-row items-center gap-[10px]'>
@@ -156,7 +133,7 @@ const Game = () => {
                 </div>
             </section>
             <section>
-                <Menu game={game} setGame={setGame} guessing={guess} />
+                <Menu game={game} setGame={setGame} />
             </section>
         </div>
     );

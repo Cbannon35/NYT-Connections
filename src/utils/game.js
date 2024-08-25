@@ -55,6 +55,7 @@ export const getColor = (level) => {
  * @property {Hint[]} hints - The hints the user has received
  * @property {string[]} currentGuess - The current guess the user is making
  * @property {int} mistakes - The number of mistakes the user has made
+ * @property {boolean} lastGuessCorrect - Whether the last guess was correct
  */
 
 export class ClientGame {
@@ -75,9 +76,6 @@ export class ClientGame {
         this.hints = [];
         this.currentGuess = [];
         this.mistakes = 0;
-    }
-
-    shuffle() {
-        this.words = this.words.sort(() => Math.random() - 0.5);
+        this.lastGuessCorrect = false;
     }
 }

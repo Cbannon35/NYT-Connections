@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import ReactDOM from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { COLORS, BACKGROUND_COLORS } from '../utils/game';
@@ -8,24 +7,20 @@ import { getItem, addItem } from '../utils/indexedDB';
 import LevelSelect from './LevelSelect';
 import Spinner from './Spinner';
 
+import { useGameStore } from '../utils/gameStore';
+
 const Hints = () => {
     const date = useParams().date;
-    const [game, setGame] = useState(null);
-    const [loadingGame, setLoadingGame] = useState(true);
+    // const [loadingGame, setLoadingGame] = useState(true);
     const [hintLevel, setHintLevel] = useState(0);
-    const [canTap, setCanTap] = useState(true);
-    const [open, setOpen] = useState(false);
-    const [error, setError] = useState(null);
-    const lastHintRef = useRef(null);
+    const game = useGameStore((state) => state.game);
+    const loaded = useGameStore((state) => state.loaded);
+    const error = useGameStore((state) => state.hintError);
+    const setError = useGameStore((state) => state.setHintError);
+    const updateHints = useGameStore((state) => state.updateHints);
 
-    useEffect(() => {
-        getItem(date).then((result) => {
-            if (result) {
-                setGame(result.game);
-                setLoadingGame(false);
-            }
-        });
-    }, []);
+    const [canTap, setCanTap] = useState(true);
+    const lastHintRef = useRef(null);
 
     useEffect(() => {
         // Scroll to the last hint whenever game.hints changes
@@ -65,16 +60,14 @@ const Hints = () => {
                 date: new Date(),
             };
 
-            setGame({ ...game, hints: [...game.hints, hint] });
-            addItem(date, { ...game, hints: [...game.hints, hint] });
+            updateHints(hint);
         } catch (error) {
             console.error("Error submitting guess: ", error);
         }
-
         setCanTap(true);
     }
 
-    if (loadingGame === true) {
+    if (!loaded === true) {
         return <h1>Retrieving Hints...</h1>
     }
 

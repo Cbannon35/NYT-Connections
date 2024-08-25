@@ -1,22 +1,28 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 
-const Word = ({ word, guessWord, selectedCount, selected, isAnimating, animationType }) => {
+const Word = ({ word, guessWord, selectedCount, selected, isAnimating, animationType, game }) => {
   const bgColor = selected ? '#5A594E' : '#EFEFE6';
   const textColor = selected ? '#FFFFFF' : '#000000';
+  const incorrectColor = selected ? '#9C9C92' : '#EFEFE6';
 
   const boxRef = useRef(null);
   const textRef = useRef(null);
 
-  const animations = {
-    none: {},
-    correct: {
-      y: [0, -10, 10, -10, 10, 0],
+  const variants = {
+    initial: { backgroundColor: bgColor, color: textColor },
+    guess: {
+      y: [0, -10, 0],
+      transition: { duration: 0.5, ease: "easeInOut" }
     },
-    incorrect: {
-      x: [-10, 10, -10, 10, -10, 0],
-    },
+    incorrectGuess: {
+      y: [0, -10, 0],
+      x: [0, -10, 10, -10, 10, 0],
+      backgroundColor: incorrectColor,
+      transition: { duration: 0.8, ease: "easeInOut" }
+    }
   };
+
 
   useEffect(() => {
     function resize() {
@@ -62,8 +68,8 @@ const Word = ({ word, guessWord, selectedCount, selected, isAnimating, animation
     <motion.div
       initial={{ backgroundColor: bgColor, color: textColor }}
       whileTap={canTap ? { scale: 0.9 } : undefined}
-      // animate={{ backgroundColor: bgColor, color: textColor }}
-      animate={isAnimating ? animations[animationType] : { backgroundColor: bgColor, color: textColor }}
+      animate={"initial"}
+      variants={variants}
       className={`rounded-md select-none text-center content-center overflow-hidden whitespace-nowrap`}
       style={{ cursor: canTap ? "pointer" : "" }}
       onTapStart={() => {

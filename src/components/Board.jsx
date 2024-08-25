@@ -5,6 +5,8 @@ import "./Board.css"
 
 import { getColor } from '../utils/game';
 import { addItem } from '../utils/indexedDB';
+import { motion } from 'framer-motion'
+import { useGameStore } from '../utils/gameStore';
 
 /**
  * The Board component
@@ -12,35 +14,16 @@ import { addItem } from '../utils/indexedDB';
  * @param {React.Dispatch<React.SetStateAction<ClientGame>>} setGame
  * @returns 
  */
-const Board = ({ game, setGame, isAnimating, correctGuess }) => {
-
-    function guessWord(word) {
-        if (game.currentGuess.includes(word)) {
-            setGame(prevGame => {
-                const newGame = { ...prevGame };
-                newGame.currentGuess = newGame.currentGuess.filter(w => w !== word);
-                addItem(newGame.id, newGame);
-                return newGame;
-            });
-            return;
-        }
-
-        if (game.currentGuess.length >= 4) {
-            return;
-        }
-
-        setGame(prevGame => {
-            const newGame = { ...prevGame };
-            newGame.currentGuess = [...newGame.currentGuess, word];
-            addItem(newGame.id, newGame);
-            return newGame;
-        });
-    }
+const Board = () => {
+    const game = useGameStore((state) => state.game);
+    const guessWord = useGameStore((state) => state.guessWord);
 
     return (
         <section className='boardContainer m-auto'>
             {game.categories.map((category, index) => (
-                <section
+                <motion.section
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
                     key={index}
                     style={{ backgroundColor: getColor(category.level) }}
                     className='rounded-md leading-[19px] flex flex-col justify-center items-center col-span-4'
@@ -56,10 +39,10 @@ const Board = ({ game, setGame, isAnimating, correctGuess }) => {
                             </li>
                         ))}
                     </ol>
-                </section>
+                </motion.section>
             ))}
             {game.words.map((word, index) => (
-                <Word key={index} word={word} guessWord={guessWord} selectedCount={game.currentGuess.length} selected={game.currentGuess.includes(word)} isAnimating={isAnimating} correctGuess={correctGuess} />
+                <Word key={index} word={word} guessWord={guessWord} selectedCount={game.currentGuess.length} selected={game.currentGuess.includes(word)} game={game} />
             ))}
         </section>
     )

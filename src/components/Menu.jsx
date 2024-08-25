@@ -3,6 +3,7 @@ import Results from './Results';
 import BottomSheet from './BottomSheet';
 
 import { addItem } from '../utils/indexedDB';
+import { useGameStore } from '../utils/gameStore';
 
 function arraysEqual(a, b) {
     if (a === b) return true;
@@ -18,32 +19,25 @@ function arraysEqual(a, b) {
     return true;
 }
 
-const Menu = ({ game, setGame, guessing }) => {
+const Menu = () => {
 
     const [showResults, setShowResults] = useState(false);
+
+    const game = useGameStore((state) => state.game);
+    const loaded = useGameStore((state) => state.loaded);
+    const deselectAll = useGameStore((state) => state.deselctAll);
+    const shuffle = useGameStore((state) => state.shuffleGame);
+    const setResults = useGameStore((state) => state.setResults);
+    const correctGuess = useGameStore((state) => state.correctGuess);
+    const incorrectGuess = useGameStore((state) => state.incorrectGuess);
+
     const deslectDisable = game.currentGuess.length == 0
     const submitDisable = game.currentGuess.length != 4
 
-    function deselectAll() {
-        setGame(prevGame => ({
-            ...prevGame,
-            currentGuess: []
-        }));
-        addItem(game.id, game);
-    }
-
-    function shuffle() {
-        setGame(prevGame => {
-            const newGame = { ...prevGame };
-            newGame.words = newGame.words.sort(() => Math.random() - 0.5);
-            return newGame;
-        });
-        addItem(game.id, game);
-    }
-
     useEffect(() => {
+        if (!game) return;
         const url = `${import.meta.env.VITE_FAST_API_ENDPOINT}/${game.id}/categories/complete`;
-        async function fetchCategories() {
+        async function fetchCategoryResults() {
             try {
                 const response = await fetch(url)
                 if (!response.ok) {
@@ -60,26 +54,18 @@ const Menu = ({ game, setGame, guessing }) => {
                         words: category.members
                     });
                 }
-                setGame(prevGame => ({
-                    ...prevGame,
-                    results: results,
-                }));
-                addItem(game.id, {
-                    ...game,
-                    results: results
-                });
+                setResults(results);
 
             } catch (error) {
                 console.error("Error completing categories: ", error);
             }
         }
         if (game.solved || game.lost) {
-            fetchCategories();
+            fetchCategoryResults();
         }
     }, [game.solved, game.lost]);
 
     async function submit() {
-        console.log("Submitting guess");
         if (game.currentGuess.length != 4) {
             console.log("Somehow submit was clicked without 4 words selected")
             return;
@@ -105,58 +91,26 @@ const Menu = ({ game, setGame, guessing }) => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const data = await response.json();
-            // console.log(data);
+            console.log(data);
             const guess_level = data.data.level;
-            game.guesses.push(guess);
             if (guess_level == -1) {
-                console.log("Incorrect guess");
-                guessing(false);
-                setGame(prevGame => ({
-                    ...prevGame,
-                    mistakes: prevGame.mistakes + 1,
-                    lost: prevGame.mistakes >= 3
-                }));
-                addItem(game.id, {
-                    ...game,
-                    mistakes: game.mistakes + 1,
-                    lost: game.mistakes >= 3
-                });
+                incorrectGuess(guess);
             } else {
-                console.log("Correct guess: ", guess_level);
-                guessing(true);
-                setGame(prevGame => ({
-                    ...prevGame,
-                    categories: [...prevGame.categories, {
-                        level: guess_level,
-                        group: data.data.group,
-                        words: guess
-                    }],
-                    currentGuess: [],
-                    words: [...prevGame.words.filter(word => !prevGame.currentGuess.includes(word))],
-                    solved: prevGame.categories.length >= 3
-                }));
-
-                addItem(game.id, {
-                    ...game,
-                    categories: [...game.categories, {
-                        level: guess_level,
-                        group: data.data.group,
-                        words: guess
-                    }],
-                    currentGuess: [],
-                    words: [...game.words.filter(word => !game.currentGuess.includes(word))],
-                    solved: game.categories.length >= 3
-                });
+                correctGuess(guess, data.data);
             }
         } catch (error) {
             console.error("Error submitting guess: ", error);
         }
     }
 
+    if (!loaded) {
+        return <div>Loading...</div>
+    }
+
     return (
         <>
             <div className='flex flex-row gap-[10px] justify-center'>
-                {game.solved || game.lost ?
+                {game && (game.solved || game.lost) ?
                     <button className="px-[15py] rounded-full font-semibold min-w-[7.5em] h-[3em] w-fit" style={{ border: "1px solid black" }} onClick={() => setShowResults(true)}>View Results</button>
                     :
                     <>
@@ -166,7 +120,7 @@ const Menu = ({ game, setGame, guessing }) => {
                     </>}
             </div>
             <BottomSheet isVisible={showResults} title={"Results"} onClose={() => setShowResults(false)}>
-                <Results game={game} />
+                <Results />
             </BottomSheet>
         </>
     )
