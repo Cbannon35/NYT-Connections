@@ -45,10 +45,10 @@ const Hints = () => {
             if (!response.ok) {
                 if (response.status === 400) {
                     setError("Max hints reached for level");
-                    setTimeout(() => setError(false), 2000);
+                    setTimeout(() => setError(false), 1000);
                 } else if (response.status === 429) {
                     setError("Requested too fast");
-                    setTimeout(() => setError(false), 2000);
+                    setTimeout(() => setError(false), 1000);
                 }
                 throw new Error(`HTTP error! status: ${response.status}`);
             }

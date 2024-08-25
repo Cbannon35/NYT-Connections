@@ -1,28 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { useGameStore } from '../utils/gameStore';
 
 const Word = ({ word, guessWord, selectedCount, selected, isAnimating, animationType, game }) => {
   const bgColor = selected ? '#5A594E' : '#EFEFE6';
   const textColor = selected ? '#FFFFFF' : '#000000';
-  const incorrectColor = selected ? '#9C9C92' : '#EFEFE6';
+  const incorrectColor = '#9C9C92'
+
+  const incorrectGuessAnimating = useGameStore((state) => state.incorrectGuessAnimating)
 
   const boxRef = useRef(null);
   const textRef = useRef(null);
-
-  const variants = {
-    initial: { backgroundColor: bgColor, color: textColor },
-    guess: {
-      y: [0, -10, 0],
-      transition: { duration: 0.5, ease: "easeInOut" }
-    },
-    incorrectGuess: {
-      y: [0, -10, 0],
-      x: [0, -10, 10, -10, 10, 0],
-      backgroundColor: incorrectColor,
-      transition: { duration: 0.8, ease: "easeInOut" }
-    }
-  };
-
 
   useEffect(() => {
     function resize() {
@@ -66,11 +54,10 @@ const Word = ({ word, guessWord, selectedCount, selected, isAnimating, animation
   let canTap = selectedCount < 4 || selected;
   return (
     <motion.div
-      initial={{ backgroundColor: bgColor, color: textColor }}
+      initial={{ backgroundColor: incorrectGuessAnimating && selected ? incorrectColor : bgColor, color: textColor }}
       whileTap={canTap ? { scale: 0.9 } : undefined}
-      animate={"initial"}
-      variants={variants}
-      className={`rounded-md select-none text-center content-center overflow-hidden whitespace-nowrap`}
+      animate={{ backgroundColor: incorrectGuessAnimating && selected ? incorrectColor : bgColor, color: textColor }}
+      className={`rounded-md select-none text-center content-center overflow-hidden whitespace-nowrap w-full h-full`}
       style={{ cursor: canTap ? "pointer" : "" }}
       onTapStart={() => {
         guessWord(word);

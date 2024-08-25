@@ -8,6 +8,14 @@ export const useGameStore = create((set) => ({
     error: false,
     hintError: false,
 
+    guessAnimating: false,
+    correctGuessAnimating: false,
+    incorrectGuessAnimating: false,
+
+    setGuessAnimating: (guessAnimating) => set({ guessAnimating }),
+    setCorrectGuessAnimating: (correctGuessAnimating) => set({ correctGuessAnimating }),
+    setIncorrectGuessAnimating: (incorrectGuessAnimating) => set({ incorrectGuessAnimating }),
+
     setGame: async (game) => {
         await addItem(game.id, game);
         set({ game: game });
@@ -79,8 +87,8 @@ export const useGameStore = create((set) => ({
 
     incorrectGuess: async (guess) => {
         set((state) => {
-            state.game.guesses.push(guess);
-            const newGame = { ...state.game, mistakes: state.game.mistakes + 1, lost: state.game.mistakes + 1 >= 3 };
+            const newGame = { ...state.game, mistakes: state.game.mistakes + 1, lost: state.game.mistakes + 1 > 3, lastCorrectGuess: false, guesses: [...state.game.guesses, guess] };
+            // newGame.guesses.push(guess);
             addItem(newGame.id, newGame);
             return { game: newGame };
         });
@@ -89,8 +97,9 @@ export const useGameStore = create((set) => ({
     correctGuess: async (guess, data) => {
         set((state) => {
             // console.log("got data", data);
-            state.game.guesses.push(guess);
-            const newGame = { ...state.game, categories: [...state.game.categories, { level: data.level, group: data.group, words: guess }], currentGuess: [], words: [...state.game.words.filter(word => !state.game.currentGuess.includes(word))], solved: state.game.categories.length >= 3 };
+            // state.game.guesses.push(guess);
+            const newGame = { ...state.game, categories: [...state.game.categories, { level: data.level, group: data.group, words: guess }], currentGuess: [], words: [...state.game.words.filter(word => !state.game.currentGuess.includes(word))], solved: state.game.categories.length >= 3, lastCorrectGuess: true, guesses: [...state.game.guesses, guess] };
+            // newGame.guesses.push(guess);
             addItem(newGame.id, newGame);
             return { game: newGame };
         });

@@ -19,6 +19,8 @@ function arraysEqual(a, b) {
     return true;
 }
 
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
 const Menu = () => {
 
     const [showResults, setShowResults] = useState(false);
@@ -30,6 +32,10 @@ const Menu = () => {
     const setResults = useGameStore((state) => state.setResults);
     const correctGuess = useGameStore((state) => state.correctGuess);
     const incorrectGuess = useGameStore((state) => state.incorrectGuess);
+
+    const setGuessAnimating = useGameStore((state) => state.setGuessAnimating);
+    const setCorrectGuessAnimating = useGameStore((state) => state.setCorrectGuessAnimating);
+    const setIncorrectGuessAnimating = useGameStore((state) => state.setIncorrectGuessAnimating);
 
     const deslectDisable = game.currentGuess.length == 0
     const submitDisable = game.currentGuess.length != 4
@@ -78,6 +84,8 @@ const Menu = () => {
             }
         }
 
+        setGuessAnimating(true);
+        console.log("animating guess")
         const url = `${import.meta.env.VITE_FAST_API_ENDPOINT}/${game.id}/guess`;
         try {
             const response = await fetch(url, {
@@ -86,17 +94,30 @@ const Menu = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ guess: guess }),
-            })
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-            // console.log(data);
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            }); new Error(`HTTP error! status: ${response.status}`);
+
+            const guessDelay = delay(1500)
+            const [data] = await Promise.all([response, guessDelay]);
             const guess_level = data.data.level;
+            setGuessAnimating(false)
+            console.log('stop guess')
+
             if (guess_level == -1) {
+                console.log("firing")
                 incorrectGuess(guess);
+                setIncorrectGuessAnimating(true);
+                await delay(300);
+                setIncorrectGuessAnimating(false)
             } else {
+                setCorrectGuessAnimating(true);
+                await delay(500);
                 correctGuess(guess, data.data);
+                setCorrectGuessAnimating(false);
             }
         } catch (error) {
             console.error("Error submitting guess: ", error);

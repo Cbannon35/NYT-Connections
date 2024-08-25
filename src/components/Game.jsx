@@ -109,7 +109,7 @@ const Game = () => {
                         Mistakes remaining:
                         <span className='flex flex-row gap-[10px]'>
                             <AnimatePresence>
-                                {[...Array(4 - game.mistakes)].map((_, index) => (
+                                {[...Array((4 - game.mistakes) > 0 ? (4 - game.mistakes) : 0)].map((_, index) => (
 
                                     <motion.span key={index} className="bg-gray-600 w-[16px] h-[16px] rounded-full origin-center" exit={{ scale: 0 }} transition={{ duration: 0.2 }}></motion.span>
 
