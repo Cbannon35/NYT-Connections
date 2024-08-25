@@ -30,6 +30,7 @@ const Menu = () => {
     const deselectAll = useGameStore((state) => state.deselctAll);
     const shuffle = useGameStore((state) => state.shuffleGame);
     const setResults = useGameStore((state) => state.setResults);
+    // const addResults = useGameStore((state) => state.addResults);
     const correctGuess = useGameStore((state) => state.correctGuess);
     const incorrectGuess = useGameStore((state) => state.incorrectGuess);
 
@@ -60,6 +61,7 @@ const Menu = () => {
                         words: category.members
                     });
                 }
+
                 setResults(results);
 
             } catch (error) {

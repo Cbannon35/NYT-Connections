@@ -80,6 +80,17 @@ export const useGameStore = create((set) => ({
     setResults: async (results) => {
         set((state) => {
             const updatedGame = { ...state.game, results };
+            const already_solved_categories = updatedGame.categories.map(category => category.level);
+            console.log("already solved categories", already_solved_categories);
+            for (let i = 0; i < results.length; i++) {
+                console.log("checking", results[i].level);
+                if (results[i].level in already_solved_categories) {
+                    console.log("already solved", results[i].group);
+                    continue;
+                }
+                console.log("adding", results[i].group);
+                updatedGame.categories.push(results[i]);
+            }
             addItem(updatedGame.id, updatedGame);
             return { game: updatedGame };
         });

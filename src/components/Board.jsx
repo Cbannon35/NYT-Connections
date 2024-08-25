@@ -146,14 +146,17 @@ const Board = () => {
                     </ol>
                 </motion.section>
             ))}
-            {game.words.map((word, index) => (
-                <motion.div
-                    key={index}
-                    id={`word-${index}`}
-                >
-                    <Word word={word} guessWord={guessWord} selectedCount={game.currentGuess.length} selected={game.currentGuess.includes(word)} game={game} />
-                </motion.div>
-            ))}
+            {!game.lost && !game.solved && (
+
+                game.words.map((word, index) => (
+                    <motion.div
+                        key={index}
+                        id={`word-${index}`}
+                    >
+                        <Word word={word} guessWord={guessWord} selectedCount={game.currentGuess.length} selected={game.currentGuess.includes(word)} game={game} />
+                    </motion.div>
+                ))
+            )}
         </section>
     )
 }
