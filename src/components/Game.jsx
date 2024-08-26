@@ -61,6 +61,7 @@ const Game = () => {
         }
 
         async function fetchGame() {
+            setLoaded(false);
             let foundGame = await loadGame(date);
             if (foundGame) {
                 console.log("Game already exists in indexedDB");
