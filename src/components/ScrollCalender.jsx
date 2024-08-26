@@ -143,7 +143,7 @@ const RenderSingleDay = ({
                     setGameStatus(5);
                 else if (result.game.solved)
                     setGameStatus(2);
-                else if (result.game.currentGuess.length > 0 || result.game.guesses.length > 0)
+                else if (result.game.currentGuess.length > 0 || result.game.guesses.length > 0 || result.game.hints.length > 0)
                     setGameStatus(3);
                 else
                     setGameStatus(0);

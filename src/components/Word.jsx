@@ -7,6 +7,7 @@ const Word = ({ word, guessWord, selectedCount, selected, isAnimating, animation
   const textColor = selected ? '#FFFFFF' : '#000000';
   const incorrectColor = '#9C9C92'
 
+  const loaded = useGameStore((state) => state.loaded)
   const incorrectGuessAnimating = useGameStore((state) => state.incorrectGuessAnimating)
 
   const boxRef = useRef(null);
@@ -48,7 +49,7 @@ const Word = ({ word, guessWord, selectedCount, selected, isAnimating, animation
       window.removeEventListener('resize', () => {
       })
     }
-  }, [word])
+  }, [word, loaded])
 
 
   let canTap = selectedCount < 4 || selected;
