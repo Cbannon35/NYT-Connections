@@ -31,6 +31,8 @@ const Game = () => {
 
     /* TODO: Fetch the game data from NYT */
     useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
         setLoaded(false);
 
         const URL = `${import.meta.env.VITE_FAST_API_ENDPOINT}/${date}/words`;
@@ -61,7 +63,6 @@ const Game = () => {
         }
 
         async function fetchGame() {
-            setLoaded(false);
             let foundGame = await loadGame(date);
             if (foundGame) {
                 console.log("Game already exists in indexedDB");
@@ -80,6 +81,11 @@ const Game = () => {
             }
         }
         fetchGame();
+
+        return () => {
+            // Abort the fetch if the component unmounts
+            controller.abort();
+        };
 
     }, [date]);
 
