@@ -9,7 +9,7 @@ import { NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGameStore } from '../utils/gameStore.js';
 
-const MAX_RETRIES = 5;
+const MAX_RETRIES = 2;
 const RETRY_DELAY = 2000; // 2 sec
 
 const Game = () => {
