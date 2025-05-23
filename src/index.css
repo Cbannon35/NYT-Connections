@@ -39,3 +39,10 @@
 .scrollable-element {
     -webkit-overflow-scrolling: touch;
 }
+
+a {
+  color: blue;
+  text-decoration: dotted;
+  text-decoration: underline;
+  cursor: pointer;
+}

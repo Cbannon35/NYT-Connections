@@ -22,6 +22,8 @@ const SplashScreen = () => {
                         Play
                     </button>
                 </Link>
+
+                <p>This app is no longer maintained. I ran out of Railway credits for the backend and the DB is asleep. If you're curious to learn more, visit <a href="https://cbannon.com">cbannon.com</a> or see the code <a href="https://github.com/Cbannon35/NYT-Connections">here</a>.</p>
             </div >
         </>
     );
